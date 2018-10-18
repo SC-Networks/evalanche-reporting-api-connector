@@ -24,7 +24,7 @@ $ composer require scn/evalanche-reporting-api-connector
 First create a connection with the access credentials provided by SC-Networks.
 
 ```php
-$connection = \Scn\EvalancheSoapApiConnector\EvalancheConnection::create(
+$connection = \Scn\EvalancheReportingApiConnector\EvalancheConnection::create(
     'given host',
     'given username',
     'given password'
@@ -153,7 +153,7 @@ Use the provided Enums in the class ```\Scn\EvalancheReportingApiConnector\Enum\
 
 ###### Example
 ```
-$connection = \Scn\EvalancheSoapApiConnector\EvalancheConnection::create(
+$connection = \Scn\EvalancheReportingApiConnector\EvalancheConnection::create(
     'given host',
     'given username',
     'given password',
@@ -174,7 +174,7 @@ Use the provided Enums in the class ```\Scn\EvalancheReportingApiConnector\Enum\
 
 ###### Example
 ```
-$connection = \Scn\EvalancheSoapApiConnector\EvalancheConnection::create(
+$connection = \Scn\EvalancheReportingApiConnector\EvalancheConnection::create(
     'given host',
     'given username',
     'given password',

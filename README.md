@@ -31,13 +31,13 @@ $connection = \Scn\EvalancheReportingApiConnector\EvalancheConnection::create(
 );
 ```
 
-The EvalancheConnection class provides one method for each table. E.g. the method ```getCheckpoints()``` queries the table 'checkpoints'.
+The EvalancheConnection class provides one method for each table. E.g. the method ```getPools()``` queries the table 'pools'.
 
-These methods each return a specific client class, e.g. ```CheckpointsClient```, to specify further options and to receive the data in different formats.
+These methods each return a specific client class, e.g. ```PoolsClient```, to specify further options and to receive the data in different formats.
 
 A minimal working example could be:
 ```
-$connection->getCheckpoints()->asXml();
+$connection->getPools()->asXml();
 ```
 
 The available methods follow the "Fluent Interface" pattern, which means they enable method chaining.
@@ -67,19 +67,19 @@ The following methods are available:
 At the current state you can choose between the following formats:
 ##### JsonArray
 
-Example: ```$connection->getCheckpoints()->asJsonArray();```<br/>
+Example: ```$connection->getPools()->asJsonArray();```<br/>
 Returns an array of stdClass objects.
 ##### JsonObject
 
-Example: ```$connection->getCheckpoints()->asJsonObject();```<br/>
+Example: ```$connection->getPools()->asJsonObject();```<br/>
 Returns a stdClass object.
 ##### XML
 
-Example: ```$connection->getCheckpoints()->asXml();```<br/>
+Example: ```$connection->getPools()->asXml();```<br/>
 Returns a string, containing valid xml.
 ##### CSV
 
-Example: ```$connection->getCheckpoints()->asCsv();```<br/>
+Example: ```$connection->getPools()->asCsv();```<br/>
 Returns a string with comma separated values. The first line contains the column titles.
 
 
@@ -89,7 +89,7 @@ Some tables provide further options or mandatory parameters:
 Use it to get the results for a specific customer, instead of the current customer.<br/>
 ###### Example:
 ```
-$connection->getCheckpoints(1234)->asJsonArray();
+$connection->getLeadpages(1234)->asJsonArray();
 ```
 
 ###### Provided by:

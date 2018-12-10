@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.0] = 2018-12-10
+## [1.0.0] - 2018-12-10
 ### Changed
 - Official Release 1.0
 

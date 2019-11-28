@@ -27,4 +27,9 @@ final class ProfileChangelogsClient extends AbstractClient
     {
         return ['pool_id' => $this->pool_id];
     }
+
+    protected function isRestrictable(): bool
+    {
+        return true;
+    }
 }

@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.1] - 2019-11-29
+### Changed
+- Add missing timestamp restrictions
+
 ## [1.0.0] - 2018-12-10
 ### Changed
 - Official Release 1.0

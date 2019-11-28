@@ -9,4 +9,9 @@ final class CheckpointStatisticsClient extends AbstractClient
     {
         return 'checkpointstatistics';
     }
+
+    protected function isRestrictable(): bool
+    {
+        return true;
+    }
 }

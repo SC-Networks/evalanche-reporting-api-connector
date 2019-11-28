@@ -240,6 +240,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
             [LeadpagesClient::class, 'leadpages', 'customer_id', 42],
             [CheckpointsClient::class, 'checkpoints', 'customer_id', 42],
             [NewsletterSendlogsClient::class, 'newslettersendlogs', 'customer_id', 42],
+            [MilestoneProfileClient::class, 'milestone-profiles', 'customer_id', 42],
         ];
     }
 

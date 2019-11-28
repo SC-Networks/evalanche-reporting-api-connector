@@ -56,6 +56,7 @@ The following methods are available:
 - ```getTrackingHistory()```
 - ```getTrackingTypes()```
 - ```getNewsletterSendlogs(int $customer_id)```
+- ```getMilestoneProfiles(int $customer_id)```
 
 #### Formats
 

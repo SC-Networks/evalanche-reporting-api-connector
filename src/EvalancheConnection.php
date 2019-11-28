@@ -130,6 +130,11 @@ final class EvalancheConnection
         return new Client\NewsletterSendlogsClient($customer_id, $this->httpClient, $this->config);
     }
 
+    public function getMilestoneProfiles(int $customerId): Client\ClientInterface
+    {
+        return new Client\MilestoneProfileClient($customerId, $this->httpClient, $this->config);
+    }
+
     private function createClient(string $clientClass): Client\ClientInterface
     {
         return new $clientClass($this->httpClient, $this->config);

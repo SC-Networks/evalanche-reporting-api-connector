@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Scn\EvalancheReportingApiConnector\Client;
 
+use Psr\Http\Message\RequestFactoryInterface;
 use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 
 final class ProfileChangelogsClient extends AbstractClient
@@ -11,10 +12,11 @@ final class ProfileChangelogsClient extends AbstractClient
 
     public function __construct(
         int $pool_id,
-        \GuzzleHttp\Client $http_client,
+        RequestFactoryInterface $requestFactory,
+        \Psr\Http\Client\ClientInterface $client,
         EvalancheConfigInterface $evalancheConfig
     ) {
-        parent::__construct($http_client, $evalancheConfig);
+        parent::__construct($requestFactory, $client, $evalancheConfig);
         $this->pool_id = $pool_id;
     }
 

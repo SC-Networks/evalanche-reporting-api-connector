@@ -1,50 +1,64 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scn\EvalancheReportingApiConnector\Client;
 
-use GuzzleHttp\Exception\ConnectException;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
-use Scn\EvalancheReportingApiConnector\Exception\AuthorizationException;
-use Scn\EvalancheReportingApiConnector\Exception\ConnectionException;
-use Scn\EvalancheReportingApiConnector\Exception\InvalidParamException;
-use Scn\EvalancheReportingApiConnector\Exception\UnreachableEndpointException;
 
-class ClientTest extends \PHPUnit\Framework\TestCase
+class ClientTest extends TestCase
 {
+    /** @var RequestFactoryInterface|MockObject|null */
+    private $requestFactory;
+
+    /** @var \Psr\Http\Client\ClientInterface|MockObject|null */
+    private $client;
+
+    /** @var EvalancheConfigInterface|MockObject|null */
+    private $config;
+
+    private $hostname = 'some-hostname';
+
+    public function setUp(): void
+    {
+        $this->requestFactory = $this->createMock(RequestFactoryInterface::class);
+        $this->client = $this->createMock(\Psr\Http\Client\ClientInterface::class);
+        $this->config = $this->createMock(EvalancheConfigInterface::class);
+
+        $this->config->expects($this->once())
+            ->method('getHostname')
+            ->willReturn($this->hostname);
+    }
+
     /**
      * @dataProvider clientDataProvider
      *
      * @param string $classname
      * @param string $tablename
      */
-    public function testClientReturnsString(string $classname, string $tablename)
+    public function testClientReturnsString(string $classname, string $tablename): void
     {
-        $httpClient = $this->getMockBuilder(\GuzzleHttp\Client::class)->getMock();
-        $evalancheConfig = $this->getMockBuilder(EvalancheConfigInterface::class)->getMock();
-
         /** @var AbstractClient $class */
-        $class = new $classname($httpClient, $evalancheConfig);
+        $class = new $classname($this->requestFactory, $this->client, $this->config);
 
-        $result = 'my-result';
-        $response = $this->makeBasicExpectations($evalancheConfig, $result);
+        $result = 'some-result';
 
-        $httpClient
-            ->expects($this->once())
-            ->method('request')
-            ->with('GET',
-                'report.php',
-                [
-                    'query' => [
-                        'table' => $tablename,
-                        'format' => 'csv',
-                        'time_format' => 'iso8601',
-                        'lang' => 'en',
-                    ],
-                ])
-            ->willReturn($response);
+        $this->createRequestExpectations(
+            [
+                'table' => $tablename,
+                'format' => 'csv',
+                'time_format' => 'iso8601',
+                'lang' => 'en',
+            ],
+            $result
+        );
 
         $this->assertSame(
             $result,
@@ -58,31 +72,20 @@ class ClientTest extends \PHPUnit\Framework\TestCase
      * @param string $classname
      * @param string $tablename
      */
-    public function testClientAsJsonArrayReturnsString(string $classname, string $tablename)
+    public function testClientAsJsonArrayReturnsString(string $classname, string $tablename): void
     {
-        $http_client = $this->getMockBuilder(\GuzzleHttp\Client::class)->getMock();
-        $evalancheConfig = $this->getMockBuilder(EvalancheConfigInterface::class)->getMock();
-
         /** @var AbstractClient $class */
-        $class = new $classname($http_client, $evalancheConfig);
+        $class = new $classname($this->requestFactory, $this->client, $this->config);
 
-        $result = json_encode([[]]);
-        $response = $this->makeBasicExpectations($evalancheConfig, $result);
-
-        $http_client
-            ->expects($this->once())
-            ->method('request')
-            ->with('GET',
-                'report.php',
-                [
-                    'query' => [
-                        'table' => $tablename,
-                        'format' => 'jsonarray',
-                        'time_format' => 'iso8601',
-                        'lang' => 'en',
-                    ],
-                ])
-            ->willReturn($response);
+        $this->createRequestExpectations(
+            [
+                'table' => $tablename,
+                'format' => 'jsonarray',
+                'time_format' => 'iso8601',
+                'lang' => 'en',
+            ],
+            json_encode([[]])
+        );
 
         $this->assertSame(
             [[]],
@@ -96,33 +99,24 @@ class ClientTest extends \PHPUnit\Framework\TestCase
      * @param string $classname
      * @param string $tablename
      */
-    public function testClientAsJsonObjectReturnsString(string $classname, string $tablename)
+    public function testClientAsJsonObjectReturnsString(string $classname, string $tablename): void
     {
-        $http_client = $this->getMockBuilder(\GuzzleHttp\Client::class)->getMock();
-        $evalancheConfig = $this->getMockBuilder(EvalancheConfigInterface::class)->getMock();
-
         /** @var AbstractClient $class */
-        $class = new $classname($http_client, $evalancheConfig);
+        $class = new $classname($this->requestFactory, $this->client, $this->config);
 
         $key = 'my-key';
         $value = 'my-value';
         $result = json_encode([$key => $value]);
-        $response = $this->makeBasicExpectations($evalancheConfig, $result);
 
-        $http_client
-            ->expects($this->once())
-            ->method('request')
-            ->with('GET',
-                'report.php',
-                [
-                    'query' => [
-                        'table' => $tablename,
-                        'format' => 'jsonobject',
-                        'time_format' => 'iso8601',
-                        'lang' => 'en',
-                    ],
-                ])
-            ->willReturn($response);
+        $this->createRequestExpectations(
+            [
+                'table' => $tablename,
+                'format' => 'jsonobject',
+                'time_format' => 'iso8601',
+                'lang' => 'en',
+            ],
+            $result
+        );
 
         $this->assertSame(
             $value,
@@ -136,33 +130,24 @@ class ClientTest extends \PHPUnit\Framework\TestCase
      * @param string $classname
      * @param string $tablename
      */
-    public function testClientAsXmlReturnsString(string $classname, string $tablename)
+    public function testClientAsXmlReturnsString(string $classname, string $tablename): void
     {
-        $http_client = $this->getMockBuilder(\GuzzleHttp\Client::class)->getMock();
-        $evalancheConfig = $this->getMockBuilder(EvalancheConfigInterface::class)->getMock();
-
         /** @var AbstractClient $class */
-        $class = new $classname($http_client, $evalancheConfig);
+        $class = new $classname($this->requestFactory, $this->client, $this->config);
 
         $key = 'my-key';
         $value = 'my-value';
         $result = '<' . $key . ' value="' . $value . '"></' . $key . '>';
-        $response = $this->makeBasicExpectations($evalancheConfig, $result);
 
-        $http_client
-            ->expects($this->once())
-            ->method('request')
-            ->with('GET',
-                'report.php',
-                [
-                    'query' => [
-                        'table' => $tablename,
-                        'format' => 'xml',
-                        'time_format' => 'iso8601',
-                        'lang' => 'en',
-                    ],
-                ])
-            ->willReturn($response);
+        $this->createRequestExpectations(
+            [
+                'table' => $tablename,
+                'format' => 'xml',
+                'time_format' => 'iso8601',
+                'lang' => 'en',
+            ],
+            $result
+        );
 
         $this->assertSame(
             $result,
@@ -170,7 +155,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function clientDataProvider()
+    public function clientDataProvider(): array
     {
         return [
             [CheckpointStatisticsClient::class, 'checkpointstatistics'],
@@ -200,31 +185,22 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         string $tablename,
         string $additionalParamName,
         $additionalParamValue
-    ) {
-        $http_client = $this->getMockBuilder(\GuzzleHttp\Client::class)->getMock();
-        $evalancheConfig = $this->getMockBuilder(EvalancheConfigInterface::class)->getMock();
-
+    ): void {
         /** @var AbstractClient $class */
-        $class = new $classname($additionalParamValue, $http_client, $evalancheConfig);
+        $class = new $classname($additionalParamValue, $this->requestFactory, $this->client, $this->config);
 
         $result = 'my-result';
-        $response = $this->makeBasicExpectations($evalancheConfig, $result);
 
-        $http_client
-            ->expects($this->once())
-            ->method('request')
-            ->with('GET',
-                'report.php',
-                [
-                    'query' => [
-                        'table' => $tablename,
-                        'format' => 'csv',
-                        'time_format' => 'iso8601',
-                        'lang' => 'en',
-                        $additionalParamName => $additionalParamValue,
-                    ],
-                ])
-            ->willReturn($response);
+        $this->createRequestExpectations(
+            [
+                'table' => $tablename,
+                'format' => 'csv',
+                'time_format' => 'iso8601',
+                'lang' => 'en',
+                $additionalParamName => $additionalParamValue,
+            ],
+            $result
+        );
 
         $this->assertSame(
             $result,
@@ -232,7 +208,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function clientAdditionalDataProvider()
+    public function clientAdditionalDataProvider(): array
     {
         return [
             [ProfilesClient::class, 'profiles', 'pool_id', 42],
@@ -253,30 +229,21 @@ class ClientTest extends \PHPUnit\Framework\TestCase
     public function testClientWithoptionalParamReturnsString(
         string $classname,
         string $tablename
-    ) {
-        $http_client = $this->getMockBuilder(\GuzzleHttp\Client::class)->getMock();
-        $evalancheConfig = $this->getMockBuilder(EvalancheConfigInterface::class)->getMock();
-
+    ): void {
         /** @var AbstractClient $class */
-        $class = new $classname(null, $http_client, $evalancheConfig);
+        $class = new $classname(null, $this->requestFactory, $this->client, $this->config);
 
         $result = 'my-result';
-        $response = $this->makeBasicExpectations($evalancheConfig, $result);
 
-        $http_client
-            ->expects($this->once())
-            ->method('request')
-            ->with('GET',
-                'report.php',
-                [
-                    'query' => [
-                        'table' => $tablename,
-                        'format' => 'csv',
-                        'time_format' => 'iso8601',
-                        'lang' => 'en',
-                    ],
-                ])
-            ->willReturn($response);
+        $this->createRequestExpectations(
+            [
+                'table' => $tablename,
+                'format' => 'csv',
+                'time_format' => 'iso8601',
+                'lang' => 'en',
+            ],
+            $result
+        );
 
         $this->assertSame(
             $result,
@@ -284,7 +251,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function clientOptionalDataProvider()
+    public function clientOptionalDataProvider(): array
     {
         return [
             [LeadpagesClient::class, 'leadpages'],
@@ -298,34 +265,25 @@ class ClientTest extends \PHPUnit\Framework\TestCase
      * @param string $classname
      * @param string $tablename
      */
-    public function testClientWithTimeRestrictionFromReturnsString(string $classname, string $tablename)
+    public function testClientWithTimeRestrictionFromReturnsString(string $classname, string $tablename): void
     {
-        $http_client = $this->getMockBuilder(\GuzzleHttp\Client::class)->getMock();
-        $evalancheConfig = $this->getMockBuilder(EvalancheConfigInterface::class)->getMock();
-
         /** @var AbstractClient $class */
-        $class = new $classname($http_client, $evalancheConfig);
+        $class = new $classname($this->requestFactory, $this->client, $this->config);
 
         $result = 'my-result';
-        $response = $this->makeBasicExpectations($evalancheConfig, $result);
 
         $from = 'yesterday -1 day';
 
-        $http_client
-            ->expects($this->once())
-            ->method('request')
-            ->with('GET',
-                'report.php',
-                [
-                    'query' => [
-                        'table' => $tablename,
-                        'format' => 'csv',
-                        'time_format' => 'iso8601',
-                        'lang' => 'en',
-                        'from' => urlencode($from),
-                    ],
-                ])
-            ->willReturn($response);
+        $this->createRequestExpectations(
+            [
+                'table' => $tablename,
+                'format' => 'csv',
+                'time_format' => 'iso8601',
+                'lang' => 'en',
+                'from' => urlencode($from),
+            ],
+            $result
+        );
 
         $this->assertSame(
             $result,
@@ -339,34 +297,25 @@ class ClientTest extends \PHPUnit\Framework\TestCase
      * @param string $classname
      * @param string $tablename
      */
-    public function testClientWithTimeRestrictionToReturnsString(string $classname, string $tablename)
+    public function testClientWithTimeRestrictionToReturnsString(string $classname, string $tablename): void
     {
-        $http_client = $this->getMockBuilder(\GuzzleHttp\Client::class)->getMock();
-        $evalancheConfig = $this->getMockBuilder(EvalancheConfigInterface::class)->getMock();
-
         /** @var AbstractClient $class */
-        $class = new $classname($http_client, $evalancheConfig);
+        $class = new $classname($this->requestFactory, $this->client, $this->config);
 
         $result = 'my-result';
-        $response = $this->makeBasicExpectations($evalancheConfig, $result);
 
         $to = 'yesterday -1 day';
 
-        $http_client
-            ->expects($this->once())
-            ->method('request')
-            ->with('GET',
-                'report.php',
-                [
-                    'query' => [
-                        'table' => $tablename,
-                        'format' => 'csv',
-                        'time_format' => 'iso8601',
-                        'lang' => 'en',
-                        'to' => urlencode($to),
-                    ],
-                ])
-            ->willReturn($response);
+        $this->createRequestExpectations(
+            [
+                'table' => $tablename,
+                'format' => 'csv',
+                'time_format' => 'iso8601',
+                'lang' => 'en',
+                'to' => urlencode($to),
+            ],
+            $result
+        );
 
         $this->assertSame(
             $result,
@@ -380,36 +329,27 @@ class ClientTest extends \PHPUnit\Framework\TestCase
      * @param string $classname
      * @param string $tablename
      */
-    public function testClientWithTimeRestrictionFromToReturnsString(string $classname, string $tablename)
+    public function testClientWithTimeRestrictionFromToReturnsString(string $classname, string $tablename): void
     {
-        $http_client = $this->getMockBuilder(\GuzzleHttp\Client::class)->getMock();
-        $evalancheConfig = $this->getMockBuilder(EvalancheConfigInterface::class)->getMock();
-
         /** @var AbstractClient $class */
-        $class = new $classname($http_client, $evalancheConfig);
+        $class = new $classname($this->requestFactory, $this->client, $this->config);
 
         $result = 'my-result';
-        $response = $this->makeBasicExpectations($evalancheConfig, $result);
 
         $from = '28.09.2018';
         $to = 'yesterday -1 day';
 
-        $http_client
-            ->expects($this->once())
-            ->method('request')
-            ->with('GET',
-                'report.php',
-                [
-                    'query' => [
-                        'table' => $tablename,
-                        'format' => 'csv',
-                        'time_format' => 'iso8601',
-                        'lang' => 'en',
-                        'from' => urlencode($from),
-                        'to' => urlencode($to),
-                    ],
-                ])
-            ->willReturn($response);
+        $this->createRequestExpectations(
+            [
+                'table' => $tablename,
+                'format' => 'csv',
+                'time_format' => 'iso8601',
+                'lang' => 'en',
+                'from' => urlencode($from),
+                'to' => urlencode($to),
+            ],
+            $result
+        );
 
         $this->assertSame(
             $result,
@@ -426,125 +366,72 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testClientThrowsExceptionWhenNotConnected()
+    public function testConnectorPassesClientExceptionThru(): void
     {
-        $http_client = $this->getMockBuilder(\GuzzleHttp\Client::class)->getMock();
-        $evalancheConfig = $this->getMockBuilder(EvalancheConfigInterface::class)->getMock();
+        $this->expectException(ClientExceptionInterface::class);
+
+        $request = $this->createMock(RequestInterface::class);
 
         /** @var AbstractClient $class */
-        $class = new ScoringHistoryClient($http_client, $evalancheConfig);
+        $class = new ScoringHistoryClient($this->requestFactory, $this->client, $this->config);
 
-        $evalancheConfig
-            ->expects($this->once())
+        $this->config->expects($this->once())
             ->method('getTimeFormat')
             ->willReturn('iso8601');
 
-        $evalancheConfig
-            ->expects($this->once())
+        $this->config->expects($this->once())
             ->method('getLanguage')
             ->willReturn('en');
 
-        $message = 'my-message';
-        $exception = new ConnectException($message, $this->getMockBuilder(RequestInterface::class)->getMock());
-        $http_client
-            ->expects($this->once())
-            ->method('request')
-            ->with('GET',
-                'report.php',
-                [
-                    'query' => [
-                        'table' => 'scoringhistory',
-                        'format' => 'csv',
-                        'time_format' => 'iso8601',
-                        'lang' => 'en',
-                    ],
-                ])
-            ->willThrowException($exception);
+        $this->client->expects($this->once())
+            ->method('sendRequest')
+            ->with($request)
+            ->willThrowException($this->createMock(ClientExceptionInterface::class));
 
-        $this->expectException(ConnectionException::class);
-        $this->expectExceptionMessage($message);
+        $this->requestFactory->expects($this->once())
+            ->method('createRequest')
+            ->withAnyParameters()
+            ->willReturn($request);
+
         $class->asCsv();
     }
 
-    /**
-     * @dataProvider exceptionDataProvider
-     *
-     * @param int $errorCode
-     * @param string $exceptionClass
-     */
-    public function testClientThrowsExceptionOnInvalidParam(int $errorCode, string $exceptionClass)
+    private function createRequestExpectations(array $params, $result): void
     {
-        $http_client = $this->getMockBuilder(\GuzzleHttp\Client::class)->getMock();
-        $evalancheConfig = $this->getMockBuilder(EvalancheConfigInterface::class)->getMock();
-
-        /** @var AbstractClient $class */
-        $class = new ScoringHistoryClient($http_client, $evalancheConfig);
-
-        $evalancheConfig
-            ->expects($this->once())
-            ->method('getTimeFormat')
-            ->willReturn('iso8601');
-
-        $evalancheConfig
-            ->expects($this->once())
-            ->method('getLanguage')
-            ->willReturn('en');
-
-        $message = 'my-message';
-        $exception = new \Exception($message, $errorCode);
-        $http_client
-            ->expects($this->once())
-            ->method('request')
-            ->with('GET',
-                'report.php',
-                [
-                    'query' => [
-                        'table' => 'scoringhistory',
-                        'format' => 'csv',
-                        'time_format' => 'iso8601',
-                        'lang' => 'en',
-                    ],
-                ])
-            ->willThrowException($exception);
-
-        $this->expectException($exceptionClass);
-        $this->expectExceptionMessage($message);
-        $class->asCsv();
-    }
-
-    public function exceptionDataProvider()
-    {
-        return [
-            [400, InvalidParamException::class],
-            [401, AuthorizationException::class],
-            [404, UnreachableEndpointException::class],
-            [666, \Exception::class],
-        ];
-    }
-
-    private function makeBasicExpectations($evalancheConfig, $result): \PHPUnit\Framework\MockObject\MockObject
-    {
-        $evalancheConfig
-            ->expects($this->once())
-            ->method('getTimeFormat')
-            ->willReturn('iso8601');
-
-        $evalancheConfig
-            ->expects($this->once())
-            ->method('getLanguage')
-            ->willReturn('en');
-
         $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
-
         $body = $this->getMockBuilder(StreamInterface::class)->getMock();
-        $response
-            ->expects($this->once())
+        $request = $this->createMock(RequestInterface::class);
+
+        $this->config->expects($this->once())
+            ->method('getTimeFormat')
+            ->willReturn('iso8601');
+        $this->config->expects($this->once())
+            ->method('getLanguage')
+            ->willReturn('en');
+
+        $response->expects($this->once())
             ->method('getBody')
             ->willReturn($body);
-        $body
-            ->expects($this->once())
+
+        $body->expects($this->once())
             ->method('getContents')
             ->willReturn($result);
-        return $response;
+
+        $this->requestFactory->expects($this->once())
+            ->method('createRequest')
+            ->with(
+                'GET',
+                sprintf(
+                    'https://%s/report.php?%s',
+                    $this->hostname,
+                    http_build_query($params)
+                )
+            )
+            ->willReturn($request);
+
+        $this->client->expects($this->once())
+            ->method('sendRequest')
+            ->with($request)
+            ->willReturn($response);
     }
 }

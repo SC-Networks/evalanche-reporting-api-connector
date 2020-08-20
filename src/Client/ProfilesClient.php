@@ -3,15 +3,21 @@ declare(strict_types=1);
 
 namespace Scn\EvalancheReportingApiConnector\Client;
 
+use Psr\Http\Message\RequestFactoryInterface;
 use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 
 final class ProfilesClient extends AbstractClient
 {
     private $poolId;
 
-    public function __construct(int $poolId, \GuzzleHttp\Client $http_client, EvalancheConfigInterface $evalancheConfig)
+    public function __construct(
+    	int $poolId,
+	    RequestFactoryInterface $requestFactory,
+	    \Psr\Http\Client\ClientInterface $client,
+	    EvalancheConfigInterface $evalancheConfig
+    )
     {
-        parent::__construct($http_client, $evalancheConfig);
+        parent::__construct($requestFactory, $client, $evalancheConfig);
         $this->poolId = $poolId;
     }
 

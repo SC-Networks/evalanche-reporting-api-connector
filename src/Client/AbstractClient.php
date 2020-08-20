@@ -2,32 +2,39 @@
 
 namespace Scn\EvalancheReportingApiConnector\Client;
 
-use GuzzleHttp\Exception\ConnectException;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\NetworkExceptionInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Scn\EvalancheReportingApiConnector\Enum\Format;
 use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
-use Scn\EvalancheReportingApiConnector\Exception;
-use Teapot\StatusCode;
+use stdClass;
 
 abstract class AbstractClient implements ClientInterface
 {
-    protected $evalancheConfig;
+    private $requestFactory;
+
     private $httpClient;
+
+    protected $evalancheConfig;
 
     /**
      * @var string
      */
     private $fromDateTime;
+
     /**
      * @var string
      */
     private $toDateTime;
 
     public function __construct(
-        \GuzzleHttp\Client $http_client,
+        RequestFactoryInterface $requestFactory,
+        \Psr\Http\Client\ClientInterface $httpClient,
         EvalancheConfigInterface $evalancheConfig
     ) {
+        $this->requestFactory = $requestFactory;
+        $this->httpClient = $httpClient;
         $this->evalancheConfig = $evalancheConfig;
-        $this->httpClient = $http_client;
     }
 
     protected function isRestrictable(): bool
@@ -47,9 +54,9 @@ abstract class AbstractClient implements ClientInterface
         return json_decode($this->get(Format::JSON_ARRAY)) ?? [];
     }
 
-    public function asJsonObject(): \stdClass
+    public function asJsonObject(): stdClass
     {
-        return json_decode($this->get(Format::JSON_OBJECT)) ?? new \stdClass();
+        return json_decode($this->get(Format::JSON_OBJECT)) ?? new stdClass();
     }
 
     public function asXml(): string
@@ -69,31 +76,22 @@ abstract class AbstractClient implements ClientInterface
         return [];
     }
 
+    /**
+     * @throws ClientExceptionInterface
+     * @throws NetworkExceptionInterface
+     */
     private function get(string $format): string
     {
-        try {
-            return $this->httpClient
-                ->request(
-                    'GET',
-                    'report.php',
-                    ['query' => $this->aggregateQueryParams($format)]
-                )
-                ->getBody()
-                ->getContents();
-        } catch (ConnectException $e) {
-            throw new Exception\ConnectionException($e->getMessage());
-        } catch (\Exception $e) {
-            switch ($e->getCode()) {
-                case StatusCode::BAD_REQUEST:
-                    throw new Exception\InvalidParamException($e->getMessage());
-                case StatusCode::UNAUTHORIZED:
-                    throw new Exception\AuthorizationException($e->getMessage());
-                case StatusCode::NOT_FOUND:
-                    throw new Exception\UnreachableEndpointException($e->getMessage());
-                default:
-                    throw $e;
-            }
-        }
+        $request = $this->requestFactory->createRequest(
+            'GET',
+            sprintf(
+                'https://%s/report.php?%s',
+                $this->evalancheConfig->getHostname(),
+                http_build_query($this->aggregateQueryParams($format))
+            )
+        );
+
+        return $this->httpClient->sendRequest($request)->getBody()->getContents();
     }
 
     private function aggregateQueryParams(string $format): array

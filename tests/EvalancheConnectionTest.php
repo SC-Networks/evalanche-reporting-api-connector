@@ -1,48 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scn\EvalancheReportingApiConnector;
 
-use Scn\EvalancheReportingApiConnector\Client\ProfilesClient;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 
-class EvalancheConnectionTest extends \PHPUnit\Framework\TestCase
+class EvalancheConnectionTest extends TestCase
 {
-
-    /**
-     * @var EvalancheConfigInterface
-     */
+    /** @var EvalancheConfigInterface|MockObject|null */
     protected $evalancheConfig;
-    /**
-     * @var EvalancheConnection
-     */
+
+    /** @var EvalancheConnection|null */
     private $subject;
-    /**
-     * @var \GuzzleHttp\Client
-     */
+
+    /** @var ClientInterface|MockObject|null */
     private $httpClient;
 
-    public function setUp()
+    /** @var RequestFactoryInterface|MockObject|null */
+    private $requestFactory;
+
+    public function setUp(): void
     {
-        $this->httpClient = $this->getMockBuilder(\GuzzleHttp\Client::class)->getMock();
-        $this->evalancheConfig = $this->getMockBuilder(EvalancheConfigInterface::class)->getMock();
+        $this->httpClient = $this->createMock(ClientInterface::class);
+        $this->requestFactory = $this->createMock(RequestFactoryInterface::class);
+        $this->evalancheConfig = $this->createMock(EvalancheConfigInterface::class);
+
         $this->subject = new EvalancheConnection(
-            $this->evalancheConfig,
-            $this->httpClient
-        );
-    }
-
-    public function testCreateWithDefaultsReturnsInstance()
-    {
-        $this->assertInstanceOf(
-            EvalancheConnection::class,
-            $this->subject->create('my-host', 'my-user', 'my-password')
-        );
-    }
-
-    public function testCreateReturnsInstance()
-    {
-        $this->assertInstanceOf(
-            EvalancheConnection::class,
-            $this->subject->create('my-host', 'my-user', 'my-password', 'my-language', 'my-time-format', true)
+            $this->requestFactory,
+            $this->httpClient,
+            $this->evalancheConfig
         );
     }
 
@@ -52,7 +42,7 @@ class EvalancheConnectionTest extends \PHPUnit\Framework\TestCase
      * @param string $className
      * @param string $method
      */
-    public function testGetReturnsClient(string $className, string $method)
+    public function testGetReturnsClient(string $className, string $method): void
     {
         $this->assertInstanceOf(
             $className,
@@ -60,7 +50,7 @@ class EvalancheConnectionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function clientDataProvider()
+    public function clientDataProvider(): array
     {
         return [
             [Client\CheckpointsClient::class, 'getCheckpoints'],
@@ -86,7 +76,7 @@ class EvalancheConnectionTest extends \PHPUnit\Framework\TestCase
      * @param string $method
      * @param int $param
      */
-    public function testGetWithParamReturnsClient(string $className, string $method, int $param)
+    public function testGetWithParamReturnsClient(string $className, string $method, int $param): void
     {
         $this->assertInstanceOf(
             $className,
@@ -94,7 +84,7 @@ class EvalancheConnectionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function clientParamDataProvider()
+    public function clientParamDataProvider(): array
     {
         return [
             [Client\ProfileChangelogsClient::class, 'getProfileChangelogs', 42],

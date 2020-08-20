@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Scn\EvalancheReportingApiConnector\Client;
 
+use Psr\Http\Message\RequestFactoryInterface;
 use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 
 final class LeadpagesClient extends AbstractClient
@@ -11,10 +12,11 @@ final class LeadpagesClient extends AbstractClient
 
     public function __construct(
         ?int $customerId,
-        \GuzzleHttp\Client $http_client,
+        RequestFactoryInterface $requestFactory,
+        \Psr\Http\Client\ClientInterface $client,
         EvalancheConfigInterface $evalancheConfig
     ) {
-        parent::__construct($http_client, $evalancheConfig);
+        parent::__construct($requestFactory, $client, $evalancheConfig);
         $this->customerId = $customerId;
     }
 

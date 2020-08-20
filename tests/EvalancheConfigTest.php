@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scn\EvalancheReportingApiConnector;
 
+use PHPUnit\Framework\TestCase;
 use Scn\EvalancheReportingApiConnector\Enum\Language;
 use Scn\EvalancheReportingApiConnector\Enum\TimeFormat;
 
-class EvalancheConfigTest extends \PHPUnit\Framework\TestCase
+class EvalancheConfigTest extends TestCase
 {
     /**
      * @var EvalancheConfig
@@ -33,7 +36,7 @@ class EvalancheConfigTest extends \PHPUnit\Framework\TestCase
     private $timeFormat = TimeFormat::RFC1123;
 
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->subject = new EvalancheConfig(
             $this->hostname,
@@ -44,7 +47,7 @@ class EvalancheConfigTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetUsernameReturnsString()
+    public function testGetUsernameReturnsString(): void
     {
         $this->assertSame(
             $this->username,
@@ -52,7 +55,7 @@ class EvalancheConfigTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetHostnameReturnsString()
+    public function testGetHostnameReturnsString(): void
     {
         $this->assertSame(
             $this->hostname,
@@ -60,7 +63,7 @@ class EvalancheConfigTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetPasswordReturnsString()
+    public function testGetPasswordReturnsString(): void
     {
         $this->assertSame(
             $this->password,
@@ -68,7 +71,7 @@ class EvalancheConfigTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetLanguageReturnsString()
+    public function testGetLanguageReturnsString(): void
     {
         $this->assertSame(
             $this->language,
@@ -76,7 +79,7 @@ class EvalancheConfigTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetLanguageReturnsDefaultString()
+    public function testGetLanguageReturnsDefaultString(): void
     {
         $this->subject = new EvalancheConfig(
             $this->hostname,
@@ -92,7 +95,7 @@ class EvalancheConfigTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetTimeFormatReturnsString()
+    public function testGetTimeFormatReturnsString(): void
     {
         $this->assertSame(
             $this->timeFormat,
@@ -100,7 +103,7 @@ class EvalancheConfigTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetTimeFormatReturnsDefaultString()
+    public function testGetTimeFormatReturnsDefaultString(): void
     {
         $this->subject = new EvalancheConfig(
             $this->hostname,

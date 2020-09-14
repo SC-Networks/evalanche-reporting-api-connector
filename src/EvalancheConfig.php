@@ -8,11 +8,11 @@ use Scn\EvalancheReportingApiConnector\Enum\TimeFormat;
 
 final class EvalancheConfig implements EvalancheConfigInterface
 {
-    private $hostname;
-    private $username;
-    private $password;
-    private $language;
-    private $timeFormat;
+    private string $hostname;
+    private string $username;
+    private string $password;
+    private string $language;
+    private string $timeFormat;
 
     public function __construct(
         string $hostname,

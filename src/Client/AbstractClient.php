@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Scn\EvalancheReportingApiConnector\Client;
 
@@ -11,11 +13,11 @@ use stdClass;
 
 abstract class AbstractClient implements ClientInterface
 {
-    private $requestFactory;
+    private RequestFactoryInterface $requestFactory;
 
-    private $httpClient;
+    private \Psr\Http\Client\ClientInterface $httpClient;
 
-    protected $evalancheConfig;
+    protected EvalancheConfigInterface $evalancheConfig;
 
     /**
      * @var string

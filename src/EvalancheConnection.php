@@ -10,11 +10,11 @@ use Scn\EvalancheReportingApiConnector\Client;
 
 final class EvalancheConnection implements EvalancheConnectionInterface
 {
-    private $requestFactory;
+    private RequestFactoryInterface $requestFactory;
 
-    private $config;
+    private EvalancheConfigInterface $config;
 
-    private $httpClient;
+    private ClientInterface $httpClient;
 
     public function __construct(
         RequestFactoryInterface $requestFactory,

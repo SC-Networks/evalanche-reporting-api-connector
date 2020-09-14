@@ -12,16 +12,16 @@ use Psr\Http\Message\RequestFactoryInterface;
 class EvalancheConnectionTest extends TestCase
 {
     /** @var EvalancheConfigInterface|MockObject|null */
-    protected $evalancheConfig;
+    protected MockObject $evalancheConfig;
 
     /** @var EvalancheConnection|null */
-    private $subject;
+    private EvalancheConnection $subject;
 
     /** @var ClientInterface|MockObject|null */
-    private $httpClient;
+    private MockObject $httpClient;
 
     /** @var RequestFactoryInterface|MockObject|null */
-    private $requestFactory;
+    private MockObject $requestFactory;
 
     public function setUp(): void
     {

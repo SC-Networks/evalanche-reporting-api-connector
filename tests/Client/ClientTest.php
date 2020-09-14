@@ -16,15 +16,15 @@ use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 class ClientTest extends TestCase
 {
     /** @var RequestFactoryInterface|MockObject|null */
-    private $requestFactory;
+    private MockObject $requestFactory;
 
     /** @var \Psr\Http\Client\ClientInterface|MockObject|null */
-    private $client;
+    private MockObject $client;
 
     /** @var EvalancheConfigInterface|MockObject|null */
-    private $config;
+    private MockObject $config;
 
-    private $hostname = 'some-hostname';
+    private string $hostname = 'some-hostname';
 
     public function setUp(): void
     {

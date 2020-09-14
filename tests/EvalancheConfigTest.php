@@ -10,30 +10,17 @@ use Scn\EvalancheReportingApiConnector\Enum\TimeFormat;
 
 class EvalancheConfigTest extends TestCase
 {
-    /**
-     * @var EvalancheConfig
-     */
-    private $subject;
-    /**
-     * @var string
-     */
-    private $hostname = 'my-host';
-    /**
-     * @var string
-     */
-    private $username = 'my-user';
-    /**
-     * @var string
-     */
-    private $password = 'my-password';
-    /**
-     * @var string
-     */
-    private $language = Language::LANG_IT;
-    /**
-     * @var string
-     */
-    private $timeFormat = TimeFormat::RFC1123;
+    private EvalancheConfig $subject;
+    
+    private string $hostname = 'my-host';
+    
+    private string $username = 'my-user';
+    
+    private string $password = 'my-password';
+    
+    private string $language = Language::LANG_IT;
+    
+    private string $timeFormat = TimeFormat::RFC1123;
 
 
     public function setUp(): void

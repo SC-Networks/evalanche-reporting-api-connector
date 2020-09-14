@@ -9,7 +9,7 @@ use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 
 final class MilestoneProfileClient extends AbstractClient
 {
-    private $customerId;
+    private ?int $customerId;
 
     public function __construct(
         int $customerId,

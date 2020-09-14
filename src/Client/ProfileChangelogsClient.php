@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Scn\EvalancheReportingApiConnector\Client;
@@ -8,7 +9,7 @@ use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 
 final class ProfileChangelogsClient extends AbstractClient
 {
-    private $pool_id;
+    private int $pool_id;
 
     public function __construct(
         int $pool_id,

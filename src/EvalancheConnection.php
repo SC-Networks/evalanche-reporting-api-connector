@@ -110,4 +110,14 @@ final class EvalancheConnection implements EvalancheConnectionInterface
     {
         return new Client\MilestoneProfileClient($customerId, $this->requestFactory, $this->httpClient, $this->config);
     }
+    
+    public function getCampaignProfileHistory(int $campaignId): Client\ClientInterface
+    {
+        return new Client\CampaignProfileHistoryClient(
+            $campaignId,
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config
+        );
+    }
 }

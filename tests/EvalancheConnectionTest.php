@@ -91,6 +91,7 @@ class EvalancheConnectionTest extends TestCase
             [Client\ProfilesClient::class, 'getProfiles', 42],
             [Client\NewsletterSendlogsClient::class, 'getNewsletterSendlogs', 42],
             [Client\MilestoneProfileClient::class, 'getMilestoneProfiles', 42],
+            [Client\CampaignProfileHistoryClient::class, 'getCampaignProfileHistory', 42],
         ];
     }
 }

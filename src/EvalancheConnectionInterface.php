@@ -38,4 +38,6 @@ interface EvalancheConnectionInterface
 	public function getNewsletterSendlogs(int $customerId): Client\ClientInterface;
 
 	public function getMilestoneProfiles(int $customerId): Client\ClientInterface;
+	
+	public function getCampaignProfileHistory(int $campaignId): Client\ClientInterface;
 }

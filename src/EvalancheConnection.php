@@ -50,11 +50,17 @@ final class EvalancheConnection
         );
     }
 
+    /**
+     * @deprecated Checkpoint object has been removed
+     */
     public function getCheckpoints(int $customerId = null): Client\ClientInterface
     {
         return new Client\CheckpointsClient($customerId, $this->httpClient, $this->config);
     }
 
+    /**
+     * @deprecated Checkpoint object has been removed
+     */
     public function getCheckpointStatistics(): Client\ClientInterface
     {
         return $this->createClient(Client\CheckpointStatisticsClient::class);

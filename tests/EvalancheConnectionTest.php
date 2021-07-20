@@ -53,8 +53,6 @@ class EvalancheConnectionTest extends TestCase
     public function clientDataProvider(): array
     {
         return [
-            [Client\CheckpointsClient::class, 'getCheckpoints'],
-            [Client\CheckpointStatisticsClient::class, 'getCheckpointStatistics'],
             [Client\CustomersClient::class, 'getCustomers'],
             [Client\FormsClient::class, 'getForms'],
             [Client\LeadpagesClient::class, 'getLeadpages'],

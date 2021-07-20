@@ -4,17 +4,6 @@ namespace Scn\EvalancheReportingApiConnector;
 
 interface EvalancheConnectionInterface
 {
-
-    /**
-     * @deprecated Checkpoint object has been removed
-     */
-    public function getCheckpoints(int $customerId = null): Client\ClientInterface;
-
-    /**
-     * @deprecated Checkpoint object has been removed
-     */
-    public function getCheckpointStatistics(): Client\ClientInterface;
-
     public function getCustomers(): Client\ClientInterface;
 
     public function getForms(): Client\ClientInterface;

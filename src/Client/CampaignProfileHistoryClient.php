@@ -9,16 +9,13 @@ use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 
 final class CampaignProfileHistoryClient extends AbstractClient
 {
-    private int $campaignId;
-
     public function __construct(
-        int $campaignId,
+        private int $campaignId,
         RequestFactoryInterface $requestFactory,
         \Psr\Http\Client\ClientInterface $client,
         EvalancheConfigInterface $evalancheConfig
     ) {
         parent::__construct($requestFactory, $client, $evalancheConfig);
-        $this->campaignId = $campaignId;
     }
 
     protected function getTableName(): string

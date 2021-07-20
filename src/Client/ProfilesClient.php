@@ -9,17 +9,13 @@ use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 
 final class ProfilesClient extends AbstractClient
 {
-    private int $poolId;
-
     public function __construct(
-    	int $poolId,
-	    RequestFactoryInterface $requestFactory,
-	    \Psr\Http\Client\ClientInterface $client,
-	    EvalancheConfigInterface $evalancheConfig
-    )
-    {
+        private int $poolId,
+        RequestFactoryInterface $requestFactory,
+        \Psr\Http\Client\ClientInterface $client,
+        EvalancheConfigInterface $evalancheConfig
+    ) {
         parent::__construct($requestFactory, $client, $evalancheConfig);
-        $this->poolId = $poolId;
     }
 
     protected function isRestrictable(): bool

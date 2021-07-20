@@ -1,4 +1,8 @@
 # Changelog
+## [2.0.0] - 2021-mm-dd
+- Support PHP8 only
+- Add Support for PSR18 http client
+- Remove checkpoint clients
 
 ## [1.1.0] - 2019-11-29
 ### Added

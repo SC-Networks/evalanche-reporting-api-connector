@@ -10,20 +10,11 @@ use Scn\EvalancheReportingApiConnector\Client;
 
 final class EvalancheConnection implements EvalancheConnectionInterface
 {
-    private RequestFactoryInterface $requestFactory;
-
-    private EvalancheConfigInterface $config;
-
-    private ClientInterface $httpClient;
-
     public function __construct(
-        RequestFactoryInterface $requestFactory,
-        ClientInterface $httpClient,
-        EvalancheConfigInterface $config
+        private RequestFactoryInterface $requestFactory,
+        private ClientInterface $httpClient,
+        private EvalancheConfigInterface $config
     ) {
-        $this->requestFactory = $requestFactory;
-        $this->httpClient = $httpClient;
-        $this->config = $config;
     }
 
     public function getCustomers(): Client\ClientInterface
@@ -100,7 +91,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
     {
         return new Client\MilestoneProfileClient($customerId, $this->requestFactory, $this->httpClient, $this->config);
     }
-    
+
     public function getCampaignProfileHistory(int $campaignId): Client\ClientInterface
     {
         return new Client\CampaignProfileHistoryClient(

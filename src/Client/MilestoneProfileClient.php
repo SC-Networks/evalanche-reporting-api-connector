@@ -9,17 +9,13 @@ use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 
 final class MilestoneProfileClient extends AbstractClient
 {
-    private ?int $customerId;
-
     public function __construct(
-        int $customerId,
+        private int $customerId,
         RequestFactoryInterface $requestFactory,
         \Psr\Http\Client\ClientInterface $client,
         EvalancheConfigInterface $evalancheConfig
-    )
-    {
+    ) {
         parent::__construct($requestFactory, $client, $evalancheConfig);
-        $this->customerId = $customerId;
     }
 
     protected function isRestrictable(): bool

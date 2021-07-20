@@ -13,30 +13,15 @@ use stdClass;
 
 abstract class AbstractClient implements ClientInterface
 {
-    private RequestFactoryInterface $requestFactory;
+    private ?string $fromDateTime = null;
 
-    private \Psr\Http\Client\ClientInterface $httpClient;
-
-    protected EvalancheConfigInterface $evalancheConfig;
-
-    /**
-     * @var string
-     */
-    private $fromDateTime;
-
-    /**
-     * @var string
-     */
-    private $toDateTime;
+    private ?string $toDateTime = null;
 
     public function __construct(
-        RequestFactoryInterface $requestFactory,
-        \Psr\Http\Client\ClientInterface $httpClient,
-        EvalancheConfigInterface $evalancheConfig
+        private RequestFactoryInterface $requestFactory,
+        private \Psr\Http\Client\ClientInterface $httpClient,
+        protected EvalancheConfigInterface $evalancheConfig
     ) {
-        $this->requestFactory = $requestFactory;
-        $this->httpClient = $httpClient;
-        $this->evalancheConfig = $evalancheConfig;
     }
 
     protected function isRestrictable(): bool
@@ -71,8 +56,11 @@ abstract class AbstractClient implements ClientInterface
         return $this->get(Format::CSV);
     }
 
-    protected abstract function getTableName(): string;
+    abstract protected function getTableName(): string;
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getAdditionalParam(): array
     {
         return [];
@@ -96,6 +84,9 @@ abstract class AbstractClient implements ClientInterface
         return $this->httpClient->sendRequest($request)->getBody()->getContents();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function aggregateQueryParams(string $format): array
     {
         $urlParameters = [
@@ -105,11 +96,11 @@ abstract class AbstractClient implements ClientInterface
             'lang' => $this->evalancheConfig->getLanguage(),
         ];
 
-        if (true === $this->isRestrictable()) {
-            if (null !== $this->fromDateTime) {
+        if ($this->isRestrictable() === true) {
+            if ($this->fromDateTime !== null) {
                 $urlParameters['from'] = urlencode($this->fromDateTime);
             }
-            if (null !== $this->toDateTime) {
+            if ($this->toDateTime !== null) {
                 $urlParameters['to'] = urlencode($this->toDateTime);
             }
         }

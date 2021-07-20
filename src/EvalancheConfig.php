@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Scn\EvalancheReportingApiConnector;
@@ -8,24 +9,13 @@ use Scn\EvalancheReportingApiConnector\Enum\TimeFormat;
 
 final class EvalancheConfig implements EvalancheConfigInterface
 {
-    private string $hostname;
-    private string $username;
-    private string $password;
-    private string $language;
-    private string $timeFormat;
-
     public function __construct(
-        string $hostname,
-        string $username,
-        string $password,
-        string $language,
-        string $timeFormat
+        private string $hostname,
+        private string $username,
+        private string $password,
+        private string $language,
+        private string $timeFormat
     ) {
-        $this->hostname = $hostname;
-        $this->username = $username;
-        $this->password = $password;
-        $this->language = $language;
-        $this->timeFormat = $timeFormat;
     }
 
     public function getHostname(): string
@@ -45,7 +35,7 @@ final class EvalancheConfig implements EvalancheConfigInterface
 
     public function getLanguage(): string
     {
-        if (in_array($this->language, Language::ALLOWED_LANGUAGES)) {
+        if (in_array($this->language, Language::ALLOWED_LANGUAGES, true)) {
             return $this->language;
         }
         return Language::LANG_EN;
@@ -53,7 +43,7 @@ final class EvalancheConfig implements EvalancheConfigInterface
 
     public function getTimeFormat(): string
     {
-        if (in_array($this->timeFormat, TimeFormat::ALLOWED_FORMATS)) {
+        if (in_array($this->timeFormat, TimeFormat::ALLOWED_FORMATS, true)) {
             return $this->timeFormat;
         }
         return TimeFormat::ISO8601;

@@ -41,7 +41,6 @@ The call of a format method like ```asXml()``` or ```asCsv()``` is always the la
 
 #### Methods
 The following methods are available:
-- ```getCheckpoints(int $customerId = null)```
 - ```getCustomers()```
 - ```getForms()```
 - ```getLeadpages(int $customerId = null)```
@@ -89,7 +88,6 @@ $connection->getLeadpages(1234)->asJsonArray();
 ```
 
 ###### Provided by:
-- getCheckpoints (optional)
 - getLeadpages (optional)
 - getNewsletterSendlogs
 

@@ -158,7 +158,6 @@ class ClientTest extends TestCase
     public function clientDataProvider(): array
     {
         return [
-            [CheckpointStatisticsClient::class, 'checkpointstatistics'],
             [CustomersClient::class, 'customers'],
             [FormsClient::class, 'forms'],
             [MailingsClient::class, 'mailings'],
@@ -214,7 +213,6 @@ class ClientTest extends TestCase
             [ProfilesClient::class, 'profiles', 'pool_id', 42],
             [ProfileChangelogsClient::class, 'profilechangelogs', 'pool_id', 42],
             [LeadpagesClient::class, 'leadpages', 'customer_id', 42],
-            [CheckpointsClient::class, 'checkpoints', 'customer_id', 42],
             [NewsletterSendlogsClient::class, 'newslettersendlogs', 'customer_id', 42],
             [MilestoneProfileClient::class, 'milestone-profiles', 'customer_id', 42],
         ];
@@ -255,7 +253,6 @@ class ClientTest extends TestCase
     {
         return [
             [LeadpagesClient::class, 'leadpages'],
-            [CheckpointsClient::class, 'checkpoints'],
         ];
     }
 

@@ -26,22 +26,6 @@ final class EvalancheConnection implements EvalancheConnectionInterface
         $this->config = $config;
     }
 
-    /**
-     * @deprecated Checkpoint object has been removed
-     */
-    public function getCheckpoints(int $customerId = null): Client\ClientInterface
-    {
-        return new Client\CheckpointsClient($customerId, $this->requestFactory, $this->httpClient, $this->config);
-    }
-
-    /**
-     * @deprecated Checkpoint object has been removed
-     */
-    public function getCheckpointStatistics(): Client\ClientInterface
-    {
-        return new Client\CheckpointStatisticsClient($this->requestFactory, $this->httpClient, $this->config);
-    }
-
     public function getCustomers(): Client\ClientInterface
     {
         return new Client\CustomersClient($this->requestFactory, $this->httpClient, $this->config);

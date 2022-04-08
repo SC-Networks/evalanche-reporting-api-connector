@@ -159,14 +159,7 @@ class ClientTest extends TestCase
     {
         return [
             [CustomersClient::class, 'customers'],
-            [FormsClient::class, 'forms'],
-            [MailingsClient::class, 'mailings'],
-            [PoolsClient::class, 'pools'],
-            [ProfileScoresClient::class, 'profilescores'],
             [ResourceTypesClient::class, 'resourcetypes'],
-            [ScoringGroupsClient::class, 'scoringgroups'],
-            [ScoringHistoryClient::class, 'scoringhistory'],
-            [TrackingHistoryClient::class, 'trackinghistory'],
             [TrackingTypesClient::class, 'trackingtypes'],
         ];
     }
@@ -186,7 +179,12 @@ class ClientTest extends TestCase
         $additionalParamValue
     ): void {
         /** @var AbstractClient $class */
-        $class = new $classname($additionalParamValue, $this->requestFactory, $this->client, $this->config);
+        $class = new $classname(
+            $this->requestFactory,
+            $this->client,
+            $this->config,
+            $additionalParamValue,
+        );
 
         $result = 'my-result';
 
@@ -215,6 +213,13 @@ class ClientTest extends TestCase
             [LeadpagesClient::class, 'leadpages', 'customer_id', 42],
             [NewsletterSendlogsClient::class, 'newslettersendlogs', 'customer_id', 42],
             [MilestoneProfileClient::class, 'milestone-profiles', 'customer_id', 42],
+            [FormsClient::class, 'forms', 'customer_id', 42,],
+            [MailingsClient::class, 'mailings', 'customer_id', 42,],
+            [PoolsClient::class, 'pools', 'customer_id', 42,],
+            [ProfileScoresClient::class, 'profilescores', 'customer_id', 42,],
+            [ScoringGroupsClient::class, 'scoringgroups', 'customer_id', 42,],
+            [ScoringHistoryClient::class, 'scoringhistory', 'customer_id', 42,],
+            [TrackingHistoryClient::class, 'trackinghistory', 'customer_id', 42,],
         ];
     }
 
@@ -229,7 +234,12 @@ class ClientTest extends TestCase
         string $tablename
     ): void {
         /** @var AbstractClient $class */
-        $class = new $classname(null, $this->requestFactory, $this->client, $this->config);
+        $class = new $classname(
+            $this->requestFactory,
+            $this->client,
+            $this->config,
+            null
+        );
 
         $result = 'my-result';
 
@@ -265,7 +275,12 @@ class ClientTest extends TestCase
     public function testClientWithTimeRestrictionFromReturnsString(string $classname, string $tablename): void
     {
         /** @var AbstractClient $class */
-        $class = new $classname($this->requestFactory, $this->client, $this->config);
+        $class = new $classname(
+            $this->requestFactory,
+            $this->client,
+            $this->config,
+            null,
+        );
 
         $result = 'my-result';
 
@@ -297,7 +312,12 @@ class ClientTest extends TestCase
     public function testClientWithTimeRestrictionToReturnsString(string $classname, string $tablename): void
     {
         /** @var AbstractClient $class */
-        $class = new $classname($this->requestFactory, $this->client, $this->config);
+        $class = new $classname(
+            $this->requestFactory,
+            $this->client,
+            $this->config,
+            null,
+        );
 
         $result = 'my-result';
 
@@ -329,7 +349,12 @@ class ClientTest extends TestCase
     public function testClientWithTimeRestrictionFromToReturnsString(string $classname, string $tablename): void
     {
         /** @var AbstractClient $class */
-        $class = new $classname($this->requestFactory, $this->client, $this->config);
+        $class = new $classname(
+            $this->requestFactory,
+            $this->client,
+            $this->config,
+            null,
+        );
 
         $result = 'my-result';
 
@@ -370,7 +395,12 @@ class ClientTest extends TestCase
         $request = $this->createMock(RequestInterface::class);
 
         /** @var AbstractClient $class */
-        $class = new ScoringHistoryClient($this->requestFactory, $this->client, $this->config);
+        $class = new ScoringHistoryClient(
+            $this->requestFactory,
+            $this->client,
+            $this->config,
+            null,
+        );
 
         $this->config->expects($this->once())
             ->method('getTimeFormat')

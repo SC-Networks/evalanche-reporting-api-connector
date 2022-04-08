@@ -10,10 +10,10 @@ use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 final class ProfilesClient extends AbstractClient
 {
     public function __construct(
-        private int $poolId,
         RequestFactoryInterface $requestFactory,
         \Psr\Http\Client\ClientInterface $client,
-        EvalancheConfigInterface $evalancheConfig
+        EvalancheConfigInterface $evalancheConfig,
+        private int $poolId,
     ) {
         parent::__construct($requestFactory, $client, $evalancheConfig);
     }

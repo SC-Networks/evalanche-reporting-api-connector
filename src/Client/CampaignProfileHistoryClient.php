@@ -10,10 +10,10 @@ use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 final class CampaignProfileHistoryClient extends AbstractClient
 {
     public function __construct(
-        private int $campaignId,
         RequestFactoryInterface $requestFactory,
         \Psr\Http\Client\ClientInterface $client,
-        EvalancheConfigInterface $evalancheConfig
+        EvalancheConfigInterface $evalancheConfig,
+        private int $campaignId,
     ) {
         parent::__construct($requestFactory, $client, $evalancheConfig);
     }

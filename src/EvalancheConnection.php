@@ -22,39 +22,77 @@ final class EvalancheConnection implements EvalancheConnectionInterface
         return new Client\CustomersClient($this->requestFactory, $this->httpClient, $this->config);
     }
 
-    public function getForms(): Client\ClientInterface
+    public function getForms(int $customerId = null): Client\ClientInterface
     {
-        return new Client\FormsClient($this->requestFactory, $this->httpClient, $this->config);
+        return new Client\FormsClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $customerId
+        );
     }
 
     public function getLeadpages(int $customerId = null): Client\ClientInterface
     {
-        return new Client\LeadpagesClient($customerId, $this->requestFactory, $this->httpClient, $this->config);
+        return new Client\LeadpagesClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $customerId,
+        );
     }
 
-    public function getMailings(): Client\ClientInterface
-    {
-        return new Client\MailingsClient($this->requestFactory, $this->httpClient, $this->config);
+    public function getMailings(
+        int $customerId = null
+    ): Client\ClientInterface {
+        return new Client\MailingsClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $customerId,
+        );
     }
 
-    public function getPools(): Client\ClientInterface
-    {
-        return new Client\PoolsClient($this->requestFactory, $this->httpClient, $this->config);
+    public function getPools(
+        int $customerId = null
+    ): Client\ClientInterface {
+        return new Client\PoolsClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $customerId,
+        );
     }
 
     public function getProfileChangelogs(int $poolId): Client\ClientInterface
     {
-        return new Client\ProfileChangelogsClient($poolId, $this->requestFactory, $this->httpClient, $this->config);
+        return new Client\ProfileChangelogsClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $poolId,
+        );
     }
 
     public function getProfiles(int $poolId): Client\ClientInterface
     {
-        return new Client\ProfilesClient($poolId, $this->requestFactory, $this->httpClient, $this->config);
+        return new Client\ProfilesClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $poolId,
+        );
     }
 
-    public function getProfileScores(): Client\ClientInterface
-    {
-        return new Client\ProfileScoresClient($this->requestFactory, $this->httpClient, $this->config);
+    public function getProfileScores(
+        int $customerId = null
+    ): Client\ClientInterface {
+        return new Client\ProfileScoresClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $customerId,
+        );
     }
 
     public function getResourceTypes(): Client\ClientInterface
@@ -62,19 +100,37 @@ final class EvalancheConnection implements EvalancheConnectionInterface
         return new Client\ResourceTypesClient($this->requestFactory, $this->httpClient, $this->config);
     }
 
-    public function getScoringGroups(): Client\ClientInterface
-    {
-        return new Client\ScoringGroupsClient($this->requestFactory, $this->httpClient, $this->config);
+    public function getScoringGroups(
+        int $customerId = null
+    ): Client\ClientInterface {
+        return new Client\ScoringGroupsClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $customerId,
+        );
     }
 
-    public function getScoringHistory(): Client\ClientInterface
-    {
-        return new Client\ScoringHistoryClient($this->requestFactory, $this->httpClient, $this->config);
+    public function getScoringHistory(
+        int $customerId = null
+    ): Client\ClientInterface {
+        return new Client\ScoringHistoryClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $customerId,
+        );
     }
 
-    public function getTrackingHistory(): Client\ClientInterface
-    {
-        return new Client\TrackingHistoryClient($this->requestFactory, $this->httpClient, $this->config);
+    public function getTrackingHistory(
+        int $customerId = null
+    ): Client\ClientInterface {
+        return new Client\TrackingHistoryClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $customerId,
+        );
     }
 
     public function getTrackingTypes(): Client\ClientInterface
@@ -84,21 +140,31 @@ final class EvalancheConnection implements EvalancheConnectionInterface
 
     public function getNewsletterSendlogs(int $customerId): Client\ClientInterface
     {
-        return new Client\NewsletterSendlogsClient($customerId, $this->requestFactory, $this->httpClient, $this->config);
+        return new Client\NewsletterSendlogsClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $customerId,
+        );
     }
 
     public function getMilestoneProfiles(int $customerId): Client\ClientInterface
     {
-        return new Client\MilestoneProfileClient($customerId, $this->requestFactory, $this->httpClient, $this->config);
+        return new Client\MilestoneProfileClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $customerId,
+        );
     }
 
     public function getCampaignProfileHistory(int $campaignId): Client\ClientInterface
     {
         return new Client\CampaignProfileHistoryClient(
-            $campaignId,
             $this->requestFactory,
             $this->httpClient,
-            $this->config
+            $this->config,
+            $campaignId,
         );
     }
 }

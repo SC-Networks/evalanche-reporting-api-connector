@@ -10,10 +10,10 @@ use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 final class LeadpagesClient extends AbstractClient
 {
     public function __construct(
-        private ?int $customerId,
         RequestFactoryInterface $requestFactory,
         \Psr\Http\Client\ClientInterface $client,
-        EvalancheConfigInterface $evalancheConfig
+        EvalancheConfigInterface $evalancheConfig,
+        private ?int $customerId,
     ) {
         parent::__construct($requestFactory, $client, $evalancheConfig);
     }

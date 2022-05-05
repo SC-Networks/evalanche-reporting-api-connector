@@ -1,8 +1,10 @@
 # Changelog
-## [2.0.0] - 2021-mm-dd
-- Support PHP8 only
+## [2.0.0] - 2022-mm-dd
+- Add clients for `scoringcluster`, `geocoordinates` and `articlereferences`
+- Support PHP8 and up
 - Add Support for PSR18 http client
 - Remove checkpoint clients
+- Documentation improvments
 
 ## [1.1.0] - 2019-11-29
 ### Added

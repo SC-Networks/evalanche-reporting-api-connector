@@ -161,6 +161,7 @@ class ClientTest extends TestCase
             [CustomersClient::class, 'customers'],
             [ResourceTypesClient::class, 'resourcetypes'],
             [TrackingTypesClient::class, 'trackingtypes'],
+            [ScoringClusterClient::class, 'scoringcluster'],
         ];
     }
 
@@ -220,6 +221,8 @@ class ClientTest extends TestCase
             [ScoringGroupsClient::class, 'scoringgroups', 'customer_id', 42,],
             [ScoringHistoryClient::class, 'scoringhistory', 'customer_id', 42,],
             [TrackingHistoryClient::class, 'trackinghistory', 'customer_id', 42,],
+            [GeoCoordinatesClient::class, 'geocoordinates', 'customer_id', 42,],
+            [ArticleReferencesClient::class, 'articlereferences', 'customer_id', 42],
         ];
     }
 
@@ -379,12 +382,13 @@ class ClientTest extends TestCase
         );
     }
 
-    public function clientRestrictableDataProvider()
+    public function clientRestrictableDataProvider(): array
     {
         return [
             [MailingsClient::class, 'mailings'],
             [ScoringHistoryClient::class, 'scoringhistory'],
             [TrackingHistoryClient::class, 'trackinghistory'],
+            [ArticleReferencesClient::class, 'articlereferences'],
         ];
     }
 

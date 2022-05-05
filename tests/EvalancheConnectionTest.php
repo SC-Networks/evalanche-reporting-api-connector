@@ -64,6 +64,7 @@ class EvalancheConnectionTest extends TestCase
             [Client\ScoringHistoryClient::class, 'getScoringHistory'],
             [Client\TrackingHistoryClient::class, 'getTrackingHistory'],
             [Client\TrackingTypesClient::class, 'getTrackingTypes'],
+            [Client\ScoringClusterClient::class, 'getScoringCluster'],
         ];
     }
 
@@ -90,6 +91,8 @@ class EvalancheConnectionTest extends TestCase
             [Client\NewsletterSendlogsClient::class, 'getNewsletterSendlogs', 42],
             [Client\MilestoneProfileClient::class, 'getMilestoneProfiles', 42],
             [Client\CampaignProfileHistoryClient::class, 'getCampaignProfileHistory', 42],
+            [Client\GeoCoordinatesClient::class, 'getGeoCoordinates', 666],
+            [Client\ArticleReferencesClient::class, 'getArticleReferences', 666],
         ];
     }
 }

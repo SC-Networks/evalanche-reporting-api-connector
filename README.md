@@ -41,21 +41,24 @@ The call of a format method like ```asXml()``` or ```asCsv()``` is always the la
 
 #### Methods
 The following methods are available:
+- ```getArticleReferences(int $customer_id)```
 - ```getCustomers()```
 - ```getForms()```
+- ```getGeoCoordinates(int $customer_id)```
 - ```getLeadpages(int $customerId = null)```
 - ```getMailings()```
+- ```getMilestoneProfiles(int $customer_id)```
+- ```getNewsletterSendlogs(int $customer_id)```
 - ```getPools()```
 - ```getProfileChangelogs(int $pool_id)```
 - ```getProfiles(int $pool_id)```
 - ```getProfileScores()```
 - ```getResourceTypes()```
+- ```getScoringCluster()```
 - ```getScoringGroups()```
 - ```getScoringHistory()```
 - ```getTrackingHistory()```
 - ```getTrackingTypes()```
-- ```getNewsletterSendlogs(int $customer_id)```
-- ```getMilestoneProfiles(int $customer_id)```
 
 #### Formats
 

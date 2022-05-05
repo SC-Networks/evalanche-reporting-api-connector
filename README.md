@@ -19,7 +19,9 @@ $ composer require scn/evalanche-reporting-api-connector
 First create a connection with the access credentials provided by SC-Networks.
 
 ```php
-$connection = \Scn\EvalancheReportingApiConnector\EvalancheConnection::create(
+use Scn\EvalancheReportingApiConnector\EvalancheConnection;
+
+$connection = EvalancheConnection::create(
     'given host',
     'given username',
     'given password'
@@ -31,7 +33,7 @@ The EvalancheConnection class provides one method for each table. E.g. the metho
 These methods each return a specific client class, e.g. ```PoolsClient```, to specify further options and to receive the data in different formats.
 
 A minimal working example could be:
-```
+```php
 $connection->getPools()->asXml();
 ```
 
@@ -63,21 +65,41 @@ The following methods are available:
 #### Formats
 
 At the current state you can choose between the following formats:
+
 ##### JsonArray
 
-Example: ```$connection->getPools()->asJsonArray();```<br/>
+Example:
+```php
+$connection->getPools()->asJsonArray();
+```
+
 Returns an array of stdClass objects.
+
 ##### JsonObject
 
-Example: ```$connection->getPools()->asJsonObject();```<br/>
+Example:
+```php
+$connection->getPools()->asJsonObject();
+```
+
 Returns a stdClass object.
+
 ##### XML
 
-Example: ```$connection->getPools()->asXml();```<br/>
+Example:
+```php
+$connection->getPools()->asXml();
+```
+
 Returns a string, containing valid xml.
+
 ##### CSV
 
-Example: ```$connection->getPools()->asCsv();```<br/>
+Example:
+```php
+$connection->getPools()->asCsv();
+```
+
 Returns a string with comma separated values. The first line contains the column titles.
 
 
@@ -86,7 +108,7 @@ Some tables provide further options or mandatory parameters:
 ##### Customer id (int)
 Use it to get the results for a specific customer, instead of the current customer.<br/>
 ###### Example:
-```
+```php
 $connection->getLeadpages(1234)->asJsonArray();
 ```
 
@@ -97,7 +119,7 @@ $connection->getLeadpages(1234)->asJsonArray();
 ##### Pool id (int)
 Id of the pool you want to get results for.
 ###### Example:
-```
+```php
 $connection->getProfiles(123)->asJsonArray();
 ```
 
@@ -111,21 +133,21 @@ Limit the result to a defined time span by using the method ```withTimeRestricti
 ###### Examples:
 
 Everything since yesterday:
-```
+```php
 $connection
     ->getMailings()
     ->withTimeRestriction('yesterday')
     ->asJsonArray();
 ```
 From date to yesterday:
-```
+```php
 $connection
     ->getMailings()
     ->withTimeRestriction('2018-09-27', 'yesterday')
     ->asJsonArray();
 ```
 Everything until yesterday:
-```
+```php
 $connection
     ->getMailings()
     ->withTimeRestriction(null, 'yesterday')
@@ -133,9 +155,9 @@ $connection
 ```
 
 ###### Possible values:
-- date: ```2018-08-03,```, ```03.08.2018```
-- date and time: ```03.08.2018 07:30```
-- relative values: ```yesterday```, ```last monday```, ```now-24hours``` etc.
+- date: `2018-08-03`, `03.08.2018`
+- date and time: `03.08.2018 07:30`
+- relative values: `yesterday`, `last monday`, `now-24hours` etc.
 
 ###### Provided by:
 - getMailings
@@ -145,51 +167,60 @@ $connection
 - getTrackingHistory
 
 #### Language
-Default language is English, but you can pass a different language code when establishing the connection.<br/>
-Use the provided Enums in the class ```\Scn\EvalancheReportingApiConnector\Enum\Language```:
+Default language is English, but you can pass a different language code when establishing the connection.
+
+Use the provided Enums in the class `\Scn\EvalancheReportingApiConnector\Enum\Language`
 
 ###### Example
-```
-$connection = \Scn\EvalancheReportingApiConnector\EvalancheConnection::create(
+```php
+use Scn\EvalancheReportingApiConnector\Enum\Language;
+use Scn\EvalancheReportingApiConnector\EvalancheConnection;
+
+$connection = EvalancheConnection::create(
     'given host',
     'given username',
     'given password',
-    \Scn\EvalancheReportingApiConnector\Enum\Language::LANG_DE
+    Language::LANG_DE
 );
 ```
 
 ###### Possible values
-- English: ```Language::LANG_EN```
-- German: ```Language::LANG_DE```
-- Italian: ```Language::LANG_IT```
-- French: ```Language::LANG_FR```
+- English: `Language::LANG_EN`
+- German: `Language::LANG_DE`
+- Italian: `Language::LANG_IT`
+- French: `Language::LANG_FR`
 
 
 #### Time format
-Default time format is iso8601, but you can pass a different format code when establishing the connection.<br/>
-Use the provided Enums in the class ```\Scn\EvalancheReportingApiConnector\Enum\TimeFormat```:
+Default time format is iso8601, but you can pass a different format code when establishing the connection.
+
+Use the provided Enums in the class `\Scn\EvalancheReportingApiConnector\Enum\TimeFormat`
 
 ###### Example
-```
-$connection = \Scn\EvalancheReportingApiConnector\EvalancheConnection::create(
+```php
+use Scn\EvalancheReportingApiConnector\EvalancheConnection;
+use Scn\EvalancheReportingApiConnector\Enum\Language;
+use Scn\EvalancheReportingApiConnector\Enum\TimeFormat;
+
+$connection = EvalancheConnection::create(
     'given host',
     'given username',
     'given password',
-    \Scn\EvalancheReportingApiConnector\Enum\Language::LANG_DE,
-    \Scn\EvalancheReportingApiConnector\Enum\TimeFormat::UNIX,
+    Language::LANG_DE,
+    TimeFormat::UNIX,
 );
 ```
 
 ###### Possible values
-- ```TimeFormat::ISO8601```
-- ```TimeFormat::UNIX```
-- ```TimeFormat::RFC822```
-- ```TimeFormat::RFC850```
-- ```TimeFormat::RFC1036```
-- ```TimeFormat::RFC1123```
-- ```TimeFormat::RFC2822```
-- ```TimeFormat::RFC3339```
-- ```TimeFormat::W3C```
+- `TimeFormat::ISO8601`
+- `TimeFormat::UNIX`
+- `TimeFormat::RFC822`
+- `TimeFormat::RFC850`
+- `TimeFormat::RFC1036`
+- `TimeFormat::RFC1123`
+- `TimeFormat::RFC2822`
+- `TimeFormat::RFC3339`
+- `TimeFormat::W3C`
 
 ## License
 

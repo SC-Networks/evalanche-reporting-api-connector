@@ -244,4 +244,48 @@ final class EvalancheConnection implements EvalancheConnectionInterface
             $campaignId,
         );
     }
+
+    /**
+     * Queries the `scoringcluster` table
+     *
+     * Returns the scoring cluster configuration for the users' current context
+     */
+    public function getScoringCluster(): Client\ClientInterface
+    {
+        return new Client\ScoringClusterClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+        );
+    }
+
+    /**
+     * Queries the `geocoordinates` table
+     *
+     * @param int $customerId Customer id of the context
+     */
+    public function getGeoCoordinates(int $customerId): Client\ClientInterface
+    {
+        return new Client\GeoCoordinatesClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $customerId,
+        );
+    }
+
+    /**
+     * Queries the `articlereferences` table
+     *
+     * @param int $customerId Customer id of the context
+     */
+    public function getArticleReferences(int $customerId): Client\ClientInterface
+    {
+        return new Client\ArticleReferencesClient(
+            $this->requestFactory,
+            $this->httpClient,
+            $this->config,
+            $customerId,
+        );
+    }
 }

@@ -109,4 +109,25 @@ interface EvalancheConnectionInterface
      * @param int $campaignId Id of the campaign whose history should be retrieved
      */
     public function getCampaignProfileHistory(int $campaignId): Client\ClientInterface;
+
+    /**
+     * Queries the `scoringcluster` table
+     *
+     * Returns the scoring cluster configuration for the users' current context
+     */
+    public function getScoringCluster(): Client\ClientInterface;
+
+    /**
+     * Queries the `geocoordinates` table
+     *
+     * @param int $customerId Customer id of the context
+     */
+    public function getGeoCoordinates(int $customerId): Client\ClientInterface;
+
+    /**
+     * Queries the `articlereferences` table
+     *
+     * @param int $customerId Customer id of the context
+     */
+    public function getArticleReferences(int $customerId): Client\ClientInterface;
 }

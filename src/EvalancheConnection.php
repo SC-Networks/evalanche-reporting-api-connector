@@ -262,9 +262,9 @@ final class EvalancheConnection implements EvalancheConnectionInterface
     /**
      * Queries the `geocoordinates` table
      *
-     * @param int $customerId Customer id of the context
+     * @param int|null $customerId Customer id of the context
      */
-    public function getGeoCoordinates(int $customerId): Client\ClientInterface
+    public function getGeoCoordinates(?int $customerId = null): Client\ClientInterface
     {
         return new Client\GeoCoordinatesClient(
             $this->requestFactory,
@@ -277,9 +277,9 @@ final class EvalancheConnection implements EvalancheConnectionInterface
     /**
      * Queries the `articlereferences` table
      *
-     * @param int $customerId Customer id of the context
+     * @param int|null $customerId Customer id of the context
      */
-    public function getArticleReferences(int $customerId): Client\ClientInterface
+    public function getArticleReferences(?int $customerId = null): Client\ClientInterface
     {
         return new Client\ArticleReferencesClient(
             $this->requestFactory,

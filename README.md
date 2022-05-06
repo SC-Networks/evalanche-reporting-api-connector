@@ -19,12 +19,21 @@ $ composer require scn/evalanche-reporting-api-connector
 First create a connection with the access credentials provided by SC-Networks.
 
 ```php
+use Scn\EvalancheReportingApiConnector\Enum\Language;
+use Scn\EvalancheReportingApiConnector\Enum\TimeFormat;
+use Scn\EvalancheReportingApiConnector\EvalancheConfig;
 use Scn\EvalancheReportingApiConnector\EvalancheConnection;
 
 $connection = EvalancheConnection::create(
-    'given host',
-    'given username',
-    'given password'
+    new EvalancheConfig(
+        'your evalanche hostname (no uri, just the hostname)',
+        'username',
+        'password',
+        Language::LANG_EN,
+        TimeFormat::ISO8601,
+    ),
+    // $requestFactory, (optional existing PSR-17 RequestFactory instance)
+    // $httpClient, (optional existing PSR-18 Http-Client instance)
 );
 ```
 

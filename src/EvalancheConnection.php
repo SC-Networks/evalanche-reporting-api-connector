@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Scn\EvalancheReportingApiConnector;
 
+use Http\Discovery\Psr17FactoryDiscovery;
+use Http\Discovery\Psr18ClientDiscovery;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Scn\EvalancheReportingApiConnector\Client;
@@ -286,6 +288,25 @@ final class EvalancheConnection implements EvalancheConnectionInterface
             $this->httpClient,
             $this->config,
             $customerId,
+        );
+    }
+
+    /**
+     * Creates a new connector instance
+     *
+     * This utilizes psr client and factory discovery to auto-detect
+     * the necessary dependencies. HttpClient and RequestFactory can
+     * optionally be provided directly.
+     */
+    public static function create(
+        EvalancheConfigInterface $evalancheConfig,
+        ClientInterface $httpClient = null,
+        RequestFactoryInterface $requestFactory = null,
+    ): EvalancheConnectionInterface {
+        return new self(
+            $requestFactory ?? Psr17FactoryDiscovery::findRequestFactory(),
+            $httpClient ?? Psr18ClientDiscovery::find(),
+            $evalancheConfig
         );
     }
 }

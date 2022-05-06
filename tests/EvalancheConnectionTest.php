@@ -95,4 +95,14 @@ class EvalancheConnectionTest extends TestCase
             [Client\ArticleReferencesClient::class, 'getArticleReferences', 666],
         ];
     }
+
+    public function testCreateCreatesInstanceWithAutoDiscovry(): void
+    {
+        $config = $this->createMock(EvalancheConfigInterface::class);
+
+        $this->assertInstanceOf(
+            EvalancheConnection::class,
+            EvalancheConnection::create($config)
+        );
+    }
 }

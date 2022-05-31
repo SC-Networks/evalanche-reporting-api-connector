@@ -1,10 +1,16 @@
 # Changelog
-## [2.0.0] - 2022-mm-dd
+## [2.0.0] - 2022-05-31
+### Added
 - Add clients for `scoringcluster`, `geocoordinates` and `articlereferences`
-- Support PHP8 and up
-- Add Support for PSR18 http client
-- Remove checkpoint clients
-- Documentation improvments
+- Documentation improvements
+
+### Changed
+- The connection creation now expects a `EvalancheConfig` instance
+- The connection creation also supports optionally passing existing PSR RequestFactory and PSR18 HttpClient instances
+- Remove support for older PHP versions and require at least `PHP8`
+
+### Removed
+- Remove `checkpoint` client
 
 ## [1.1.0] - 2019-11-29
 ### Added

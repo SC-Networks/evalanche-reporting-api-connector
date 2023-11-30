@@ -59,13 +59,16 @@
     "qa": "Runs all QA related scripts",
     "check-cs": "Executes code style checks",
     "fix-cs": "Apply the code style rules onto the codebase",
-    "test": "Runs the unittests",
+    "tests": "Runs the unittests",
     "stan": "Runs phpstan code analysis",
     "coverage": "Runs the code coverage generation"
   },
   "config": {
     "platform": {
       "php": "8.0"
+    },
+    "allow-plugins": {
+      "php-http/discovery": true
     }
   }
 }

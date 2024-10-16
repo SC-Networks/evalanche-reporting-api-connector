@@ -2,7 +2,7 @@
 
 [![Monthly Downloads](https://poser.pugx.org/scn/evalanche-reporting-api-connector/d/monthly)](https://packagist.org/packages/scn/evalanche-reporting-api-connector)
 [![License](https://poser.pugx.org/scn/evalanche-reporting-api-connector/license)](LICENSE)
-[![Build Status](https://travis-ci.org/SC-Networks/evalanche-reporting-api-connector.svg?branch=master)](https://travis-ci.org/SC-Networks/evalanche-reporting-api-connector)
+[![Unittests](https://github.com/SC-Networks/evalanche-reporting-api-connector/actions/workflows/php.yml/badge.svg)](https://github.com/SC-Networks/evalanche-reporting-api-connector/actions/workflows/php.yml)
 
 ## Install
 

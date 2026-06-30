@@ -35,7 +35,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      *
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
-    public function getForms(int $customerId = null): Client\ClientInterface
+    public function getForms(?int $customerId = null): Client\ClientInterface
     {
         return new Client\FormsClient(
             $this->requestFactory,
@@ -50,7 +50,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      *
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
-    public function getLeadpages(int $customerId = null): Client\ClientInterface
+    public function getLeadpages(?int $customerId = null): Client\ClientInterface
     {
         return new Client\LeadpagesClient(
             $this->requestFactory,
@@ -66,7 +66,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
     public function getMailings(
-        int $customerId = null
+        ?int $customerId = null
     ): Client\ClientInterface {
         return new Client\MailingsClient(
             $this->requestFactory,
@@ -82,7 +82,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
     public function getPools(
-        int $customerId = null
+        ?int $customerId = null
     ): Client\ClientInterface {
         return new Client\PoolsClient(
             $this->requestFactory,
@@ -128,7 +128,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
     public function getProfileScores(
-        int $customerId = null
+        ?int $customerId = null
     ): Client\ClientInterface {
         return new Client\ProfileScoresClient(
             $this->requestFactory,
@@ -152,7 +152,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
     public function getScoringGroups(
-        int $customerId = null
+        ?int $customerId = null
     ): Client\ClientInterface {
         return new Client\ScoringGroupsClient(
             $this->requestFactory,
@@ -168,7 +168,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
     public function getScoringHistory(
-        int $customerId = null
+        ?int $customerId = null
     ): Client\ClientInterface {
         return new Client\ScoringHistoryClient(
             $this->requestFactory,
@@ -184,7 +184,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
     public function getTrackingHistory(
-        int $customerId = null
+        ?int $customerId = null
     ): Client\ClientInterface {
         return new Client\TrackingHistoryClient(
             $this->requestFactory,

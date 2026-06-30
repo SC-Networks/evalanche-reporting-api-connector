@@ -14,28 +14,28 @@ interface EvalancheConnectionInterface
      *
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
-    public function getForms(int $customerId = null): Client\ClientInterface;
+    public function getForms(?int $customerId = null): Client\ClientInterface;
 
     /**
      * Queries the `leadpages` table
      *
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
-    public function getLeadpages(int $customerId = null): Client\ClientInterface;
+    public function getLeadpages(?int $customerId = null): Client\ClientInterface;
 
     /**
      * Queries the `mailings` table
      *
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
-    public function getMailings(int $customerId = null): Client\ClientInterface;
+    public function getMailings(?int $customerId = null): Client\ClientInterface;
 
     /**
      * Queries the `pools` table
      *
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
-    public function getPools(int $customerId = null): Client\ClientInterface;
+    public function getPools(?int $customerId = null): Client\ClientInterface;
 
     /**
      * Queries the `profilechangelogs` table
@@ -56,7 +56,7 @@ interface EvalancheConnectionInterface
      *
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
-    public function getProfileScores(int $customerId = null): Client\ClientInterface;
+    public function getProfileScores(?int $customerId = null): Client\ClientInterface;
 
     /**
      * Queries the `resourcetypes` table
@@ -68,21 +68,21 @@ interface EvalancheConnectionInterface
      *
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
-    public function getScoringGroups(int $customerId = null): Client\ClientInterface;
+    public function getScoringGroups(?int $customerId = null): Client\ClientInterface;
 
     /**
      * Queries the `scoringhistory` table
      *
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
-    public function getScoringHistory(int $customerId = null): Client\ClientInterface;
+    public function getScoringHistory(?int $customerId = null): Client\ClientInterface;
 
     /**
      * Queries the `trackinghistory` table
      *
      * @param int|null $customerId Optional customer id of the context; default is the users current customer
      */
-    public function getTrackingHistory(int $customerId = null): Client\ClientInterface;
+    public function getTrackingHistory(?int $customerId = null): Client\ClientInterface;
 
     /**
      * Queries the `trackingtypes` table

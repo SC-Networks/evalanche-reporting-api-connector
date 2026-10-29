@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scn\EvalancheReportingApiConnector\Client;
 
+use stdClass;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\NetworkExceptionInterface;
 
@@ -19,7 +22,7 @@ interface ClientInterface
      * @throws ClientExceptionInterface
      * @throws NetworkExceptionInterface
      */
-    public function asJsonObject(): \stdClass;
+    public function asJsonObject(): stdClass;
 
     /**
      * @throws ClientExceptionInterface

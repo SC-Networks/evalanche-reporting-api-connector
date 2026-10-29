@@ -18,8 +18,8 @@ abstract class AbstractClient implements ClientInterface
     private ?string $toDateTime = null;
 
     public function __construct(
-        private RequestFactoryInterface $requestFactory,
-        private \Psr\Http\Client\ClientInterface $httpClient,
+        private readonly RequestFactoryInterface $requestFactory,
+        private readonly \Psr\Http\Client\ClientInterface $httpClient,
         protected EvalancheConfigInterface $evalancheConfig
     ) {
     }
@@ -96,7 +96,7 @@ abstract class AbstractClient implements ClientInterface
             'lang' => $this->evalancheConfig->getLanguage(),
         ];
 
-        if ($this->isRestrictable() === true) {
+        if ($this->isRestrictable()) {
             if ($this->fromDateTime !== null) {
                 $urlParameters['from'] = urlencode($this->fromDateTime);
             }

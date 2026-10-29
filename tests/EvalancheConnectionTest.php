@@ -4,30 +4,49 @@ declare(strict_types=1);
 
 namespace Scn\EvalancheReportingApiConnector;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Scn\EvalancheReportingApiConnector\Client\CustomersClient;
+use Scn\EvalancheReportingApiConnector\Client\FormsClient;
+use Scn\EvalancheReportingApiConnector\Client\LeadpagesClient;
+use Scn\EvalancheReportingApiConnector\Client\MailingsClient;
+use Scn\EvalancheReportingApiConnector\Client\PoolsClient;
+use Scn\EvalancheReportingApiConnector\Client\ProfileScoresClient;
+use Scn\EvalancheReportingApiConnector\Client\ResourceTypesClient;
+use Scn\EvalancheReportingApiConnector\Client\ScoringGroupsClient;
+use Scn\EvalancheReportingApiConnector\Client\ScoringHistoryClient;
+use Scn\EvalancheReportingApiConnector\Client\TrackingHistoryClient;
+use Scn\EvalancheReportingApiConnector\Client\TrackingTypesClient;
+use Scn\EvalancheReportingApiConnector\Client\ScoringClusterClient;
+use Scn\EvalancheReportingApiConnector\Client\ProfileChangelogsClient;
+use Scn\EvalancheReportingApiConnector\Client\ProfilesClient;
+use Scn\EvalancheReportingApiConnector\Client\NewsletterSendlogsClient;
+use Scn\EvalancheReportingApiConnector\Client\MilestoneProfileClient;
+use Scn\EvalancheReportingApiConnector\Client\CampaignProfileHistoryClient;
+use Scn\EvalancheReportingApiConnector\Client\GeoCoordinatesClient;
+use Scn\EvalancheReportingApiConnector\Client\ArticleReferencesClient;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 
 class EvalancheConnectionTest extends TestCase
 {
-    /** @var EvalancheConfigInterface|MockObject|null */
-    protected MockObject $evalancheConfig;
+    /** @var Stub&EvalancheConfigInterface */
+    protected Stub $evalancheConfig;
 
-    /** @var EvalancheConnection|null */
     private EvalancheConnection $subject;
 
-    /** @var ClientInterface|MockObject|null */
-    private MockObject $httpClient;
+    /** @var Stub&ClientInterface */
+    private Stub $httpClient;
 
-    /** @var RequestFactoryInterface|MockObject|null */
-    private MockObject $requestFactory;
+    /** @var Stub&RequestFactoryInterface */
+    private Stub $requestFactory;
 
     public function setUp(): void
     {
-        $this->httpClient = $this->createMock(ClientInterface::class);
-        $this->requestFactory = $this->createMock(RequestFactoryInterface::class);
-        $this->evalancheConfig = $this->createMock(EvalancheConfigInterface::class);
+        $this->httpClient = $this->createStub(ClientInterface::class);
+        $this->requestFactory = $this->createStub(RequestFactoryInterface::class);
+        $this->evalancheConfig = $this->createStub(EvalancheConfigInterface::class);
 
         $this->subject = new EvalancheConnection(
             $this->requestFactory,
@@ -36,12 +55,7 @@ class EvalancheConnectionTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider clientDataProvider
-     *
-     * @param string $className
-     * @param string $method
-     */
+    #[DataProvider('clientDataProvider')]
     public function testGetReturnsClient(string $className, string $method): void
     {
         $this->assertInstanceOf(
@@ -50,31 +64,25 @@ class EvalancheConnectionTest extends TestCase
         );
     }
 
-    public function clientDataProvider(): array
+    public static function clientDataProvider(): array
     {
         return [
-            [Client\CustomersClient::class, 'getCustomers'],
-            [Client\FormsClient::class, 'getForms'],
-            [Client\LeadpagesClient::class, 'getLeadpages'],
-            [Client\MailingsClient::class, 'getMailings'],
-            [Client\PoolsClient::class, 'getPools'],
-            [Client\ProfileScoresClient::class, 'getProfileScores'],
-            [Client\ResourceTypesClient::class, 'getResourceTypes'],
-            [Client\ScoringGroupsClient::class, 'getScoringGroups'],
-            [Client\ScoringHistoryClient::class, 'getScoringHistory'],
-            [Client\TrackingHistoryClient::class, 'getTrackingHistory'],
-            [Client\TrackingTypesClient::class, 'getTrackingTypes'],
-            [Client\ScoringClusterClient::class, 'getScoringCluster'],
+            [CustomersClient::class, 'getCustomers'],
+            [FormsClient::class, 'getForms'],
+            [LeadpagesClient::class, 'getLeadpages'],
+            [MailingsClient::class, 'getMailings'],
+            [PoolsClient::class, 'getPools'],
+            [ProfileScoresClient::class, 'getProfileScores'],
+            [ResourceTypesClient::class, 'getResourceTypes'],
+            [ScoringGroupsClient::class, 'getScoringGroups'],
+            [ScoringHistoryClient::class, 'getScoringHistory'],
+            [TrackingHistoryClient::class, 'getTrackingHistory'],
+            [TrackingTypesClient::class, 'getTrackingTypes'],
+            [ScoringClusterClient::class, 'getScoringCluster'],
         ];
     }
 
-    /**
-     * @dataProvider clientParamDataProvider
-     *
-     * @param string $className
-     * @param string $method
-     * @param int $param
-     */
+    #[DataProvider('clientParamDataProvider')]
     public function testGetWithParamReturnsClient(string $className, string $method, int $param): void
     {
         $this->assertInstanceOf(
@@ -83,22 +91,22 @@ class EvalancheConnectionTest extends TestCase
         );
     }
 
-    public function clientParamDataProvider(): array
+    public static function clientParamDataProvider(): array
     {
         return [
-            [Client\ProfileChangelogsClient::class, 'getProfileChangelogs', 42],
-            [Client\ProfilesClient::class, 'getProfiles', 42],
-            [Client\NewsletterSendlogsClient::class, 'getNewsletterSendlogs', 42],
-            [Client\MilestoneProfileClient::class, 'getMilestoneProfiles', 42],
-            [Client\CampaignProfileHistoryClient::class, 'getCampaignProfileHistory', 42],
-            [Client\GeoCoordinatesClient::class, 'getGeoCoordinates', 666],
-            [Client\ArticleReferencesClient::class, 'getArticleReferences', 666],
+            [ProfileChangelogsClient::class, 'getProfileChangelogs', 42],
+            [ProfilesClient::class, 'getProfiles', 42],
+            [NewsletterSendlogsClient::class, 'getNewsletterSendlogs', 42],
+            [MilestoneProfileClient::class, 'getMilestoneProfiles', 42],
+            [CampaignProfileHistoryClient::class, 'getCampaignProfileHistory', 42],
+            [GeoCoordinatesClient::class, 'getGeoCoordinates', 666],
+            [ArticleReferencesClient::class, 'getArticleReferences', 666],
         ];
     }
 
     public function testCreateCreatesInstanceWithAutoDiscovry(): void
     {
-        $config = $this->createMock(EvalancheConfigInterface::class);
+        $config = $this->createStub(EvalancheConfigInterface::class);
 
         $this->assertInstanceOf(
             EvalancheConnection::class,

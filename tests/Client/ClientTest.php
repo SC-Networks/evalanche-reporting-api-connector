@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Scn\EvalancheReportingApiConnector\Client;
 
+use Psr\Http\Client\ClientInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientExceptionInterface;
@@ -15,13 +17,13 @@ use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 
 class ClientTest extends TestCase
 {
-    /** @var RequestFactoryInterface|MockObject|null */
+    /** @var MockObject&RequestFactoryInterface */
     private MockObject $requestFactory;
 
-    /** @var \Psr\Http\Client\ClientInterface|MockObject|null */
+    /** @var MockObject&ClientInterface */
     private MockObject $client;
 
-    /** @var EvalancheConfigInterface|MockObject|null */
+    /** @var MockObject&EvalancheConfigInterface */
     private MockObject $config;
 
     private string $hostname = 'some-hostname';
@@ -29,7 +31,7 @@ class ClientTest extends TestCase
     public function setUp(): void
     {
         $this->requestFactory = $this->createMock(RequestFactoryInterface::class);
-        $this->client = $this->createMock(\Psr\Http\Client\ClientInterface::class);
+        $this->client = $this->createMock(ClientInterface::class);
         $this->config = $this->createMock(EvalancheConfigInterface::class);
 
         $this->config->expects($this->once())
@@ -37,12 +39,7 @@ class ClientTest extends TestCase
             ->willReturn($this->hostname);
     }
 
-    /**
-     * @dataProvider clientDataProvider
-     *
-     * @param string $classname
-     * @param string $tablename
-     */
+    #[DataProvider('clientDataProvider')]
     public function testClientReturnsString(string $classname, string $tablename): void
     {
         /** @var AbstractClient $class */
@@ -66,12 +63,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider clientDataProvider
-     *
-     * @param string $classname
-     * @param string $tablename
-     */
+    #[DataProvider('clientDataProvider')]
     public function testClientAsJsonArrayReturnsString(string $classname, string $tablename): void
     {
         /** @var AbstractClient $class */
@@ -93,12 +85,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider clientDataProvider
-     *
-     * @param string $classname
-     * @param string $tablename
-     */
+    #[DataProvider('clientDataProvider')]
     public function testClientAsJsonObjectReturnsString(string $classname, string $tablename): void
     {
         /** @var AbstractClient $class */
@@ -124,12 +111,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider clientDataProvider
-     *
-     * @param string $classname
-     * @param string $tablename
-     */
+    #[DataProvider('clientDataProvider')]
     public function testClientAsXmlReturnsString(string $classname, string $tablename): void
     {
         /** @var AbstractClient $class */
@@ -155,7 +137,7 @@ class ClientTest extends TestCase
         );
     }
 
-    public function clientDataProvider(): array
+    public static function clientDataProvider(): array
     {
         return [
             [CustomersClient::class, 'customers'],
@@ -166,13 +148,10 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @dataProvider clientAdditionalDataProvider
-     *
-     * @param string $classname
-     * @param string $tablename
-     * @param string $additionalParamName
-     * @param mixed $additionalParamValue
-     */
+                 *
+                 * @param mixed $additionalParamValue
+                 */
+    #[DataProvider('clientAdditionalDataProvider')]
     public function testClientWithAdditionalParamReturnsString(
         string $classname,
         string $tablename,
@@ -206,7 +185,7 @@ class ClientTest extends TestCase
         );
     }
 
-    public function clientAdditionalDataProvider(): array
+    public static function clientAdditionalDataProvider(): array
     {
         return [
             [ProfilesClient::class, 'profiles', 'pool_id', 42],
@@ -226,12 +205,7 @@ class ClientTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider clientOptionalDataProvider
-     *
-     * @param string $classname
-     * @param string $tablename
-     */
+    #[DataProvider('clientOptionalDataProvider')]
     public function testClientWithoptionalParamReturnsString(
         string $classname,
         string $tablename
@@ -262,19 +236,14 @@ class ClientTest extends TestCase
         );
     }
 
-    public function clientOptionalDataProvider(): array
+    public static function clientOptionalDataProvider(): array
     {
         return [
             [LeadpagesClient::class, 'leadpages'],
         ];
     }
 
-    /**
-     * @dataProvider clientRestrictableDataProvider
-     *
-     * @param string $classname
-     * @param string $tablename
-     */
+    #[DataProvider('clientRestrictableDataProvider')]
     public function testClientWithTimeRestrictionFromReturnsString(string $classname, string $tablename): void
     {
         /** @var AbstractClient $class */
@@ -306,12 +275,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider clientRestrictableDataProvider
-     *
-     * @param string $classname
-     * @param string $tablename
-     */
+    #[DataProvider('clientRestrictableDataProvider')]
     public function testClientWithTimeRestrictionToReturnsString(string $classname, string $tablename): void
     {
         /** @var AbstractClient $class */
@@ -343,12 +307,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider clientRestrictableDataProvider
-     *
-     * @param string $classname
-     * @param string $tablename
-     */
+    #[DataProvider('clientRestrictableDataProvider')]
     public function testClientWithTimeRestrictionFromToReturnsString(string $classname, string $tablename): void
     {
         /** @var AbstractClient $class */
@@ -382,7 +341,7 @@ class ClientTest extends TestCase
         );
     }
 
-    public function clientRestrictableDataProvider(): array
+    public static function clientRestrictableDataProvider(): array
     {
         return [
             [MailingsClient::class, 'mailings'],
@@ -396,7 +355,7 @@ class ClientTest extends TestCase
     {
         $this->expectException(ClientExceptionInterface::class);
 
-        $request = $this->createMock(RequestInterface::class);
+        $request = $this->createStub(RequestInterface::class);
 
         /** @var AbstractClient $class */
         $class = new ScoringHistoryClient(
@@ -417,7 +376,7 @@ class ClientTest extends TestCase
         $this->client->expects($this->once())
             ->method('sendRequest')
             ->with($request)
-            ->willThrowException($this->createMock(ClientExceptionInterface::class));
+            ->willThrowException($this->createStub(ClientExceptionInterface::class));
 
         $this->requestFactory->expects($this->once())
             ->method('createRequest')
@@ -429,9 +388,9 @@ class ClientTest extends TestCase
 
     private function createRequestExpectations(array $params, $result): void
     {
-        $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
-        $body = $this->getMockBuilder(StreamInterface::class)->getMock();
-        $request = $this->createMock(RequestInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
+        $body = $this->createMock(StreamInterface::class);
+        $request = $this->createStub(RequestInterface::class);
 
         $this->config->expects($this->once())
             ->method('getTimeFormat')

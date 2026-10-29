@@ -1,6 +1,7 @@
 parameters:
-	level: 8
+	level: 10
 	paths:
 		- src
 includes:
+	- phpstan-baseline.neon
 	- vendor/phpstan/phpstan-strict-rules/rules.neon

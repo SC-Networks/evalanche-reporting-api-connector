@@ -6,8 +6,8 @@ namespace Scn\EvalancheReportingApiConnector\Enum;
 
 final class Format
 {
-    public const JSON_ARRAY = 'jsonarray';
-    public const JSON_OBJECT = 'jsonobject';
-    public const XML = 'xml';
-    public const CSV = 'csv';
+    public const string JSON_ARRAY = 'jsonarray';
+    public const string JSON_OBJECT = 'jsonobject';
+    public const string XML = 'xml';
+    public const string CSV = 'csv';
 }

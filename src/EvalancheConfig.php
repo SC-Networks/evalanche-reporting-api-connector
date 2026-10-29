@@ -7,7 +7,7 @@ namespace Scn\EvalancheReportingApiConnector;
 use Scn\EvalancheReportingApiConnector\Enum\Language;
 use Scn\EvalancheReportingApiConnector\Enum\TimeFormat;
 
-final class EvalancheConfig implements EvalancheConfigInterface
+final readonly class EvalancheConfig implements EvalancheConfigInterface
 {
     public function __construct(
         private string $hostname,

@@ -1,0 +1,13 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Scn\\EvalancheReportingApiConnector\\Client\\AbstractClient\:\:asJsonArray\(\) should return array\<mixed\> but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Client/AbstractClient.php
+
+		-
+			message: '#^Method Scn\\EvalancheReportingApiConnector\\Client\\AbstractClient\:\:asJsonObject\(\) should return stdClass but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Client/AbstractClient.php

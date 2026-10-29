@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Scn\EvalancheReportingApiConnector\Client;
 
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Scn\EvalancheReportingApiConnector\EvalancheConfigInterface;
 
@@ -11,9 +12,9 @@ final class FormsClient extends AbstractClient
 {
     public function __construct(
         RequestFactoryInterface $requestFactory,
-        \Psr\Http\Client\ClientInterface $client,
+        ClientInterface $client,
         EvalancheConfigInterface $evalancheConfig,
-        private ?int $customerId,
+        private readonly ?int $customerId,
     ) {
         parent::__construct($requestFactory, $client, $evalancheConfig);
     }

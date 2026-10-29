@@ -4,6 +4,25 @@ declare(strict_types=1);
 
 namespace Scn\EvalancheReportingApiConnector;
 
+use Scn\EvalancheReportingApiConnector\Client\CustomersClient;
+use Scn\EvalancheReportingApiConnector\Client\FormsClient;
+use Scn\EvalancheReportingApiConnector\Client\LeadpagesClient;
+use Scn\EvalancheReportingApiConnector\Client\MailingsClient;
+use Scn\EvalancheReportingApiConnector\Client\PoolsClient;
+use Scn\EvalancheReportingApiConnector\Client\ProfileChangelogsClient;
+use Scn\EvalancheReportingApiConnector\Client\ProfilesClient;
+use Scn\EvalancheReportingApiConnector\Client\ProfileScoresClient;
+use Scn\EvalancheReportingApiConnector\Client\ResourceTypesClient;
+use Scn\EvalancheReportingApiConnector\Client\ScoringGroupsClient;
+use Scn\EvalancheReportingApiConnector\Client\ScoringHistoryClient;
+use Scn\EvalancheReportingApiConnector\Client\TrackingHistoryClient;
+use Scn\EvalancheReportingApiConnector\Client\TrackingTypesClient;
+use Scn\EvalancheReportingApiConnector\Client\NewsletterSendlogsClient;
+use Scn\EvalancheReportingApiConnector\Client\MilestoneProfileClient;
+use Scn\EvalancheReportingApiConnector\Client\CampaignProfileHistoryClient;
+use Scn\EvalancheReportingApiConnector\Client\ScoringClusterClient;
+use Scn\EvalancheReportingApiConnector\Client\GeoCoordinatesClient;
+use Scn\EvalancheReportingApiConnector\Client\ArticleReferencesClient;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use Psr\Http\Client\ClientInterface;
@@ -13,7 +32,7 @@ use Scn\EvalancheReportingApiConnector\Client;
 /**
  * Provides factory methods for the creation of the table-based client classes
  */
-final class EvalancheConnection implements EvalancheConnectionInterface
+final readonly class EvalancheConnection implements EvalancheConnectionInterface
 {
     public function __construct(
         private RequestFactoryInterface $requestFactory,
@@ -27,7 +46,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getCustomers(): Client\ClientInterface
     {
-        return new Client\CustomersClient($this->requestFactory, $this->httpClient, $this->config);
+        return new CustomersClient($this->requestFactory, $this->httpClient, $this->config);
     }
 
     /**
@@ -37,7 +56,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getForms(?int $customerId = null): Client\ClientInterface
     {
-        return new Client\FormsClient(
+        return new FormsClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -52,7 +71,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getLeadpages(?int $customerId = null): Client\ClientInterface
     {
-        return new Client\LeadpagesClient(
+        return new LeadpagesClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -68,7 +87,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
     public function getMailings(
         ?int $customerId = null
     ): Client\ClientInterface {
-        return new Client\MailingsClient(
+        return new MailingsClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -84,7 +103,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
     public function getPools(
         ?int $customerId = null
     ): Client\ClientInterface {
-        return new Client\PoolsClient(
+        return new PoolsClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -99,7 +118,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getProfileChangelogs(int $poolId): Client\ClientInterface
     {
-        return new Client\ProfileChangelogsClient(
+        return new ProfileChangelogsClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -114,7 +133,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getProfiles(int $poolId): Client\ClientInterface
     {
-        return new Client\ProfilesClient(
+        return new ProfilesClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -130,7 +149,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
     public function getProfileScores(
         ?int $customerId = null
     ): Client\ClientInterface {
-        return new Client\ProfileScoresClient(
+        return new ProfileScoresClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -143,7 +162,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getResourceTypes(): Client\ClientInterface
     {
-        return new Client\ResourceTypesClient($this->requestFactory, $this->httpClient, $this->config);
+        return new ResourceTypesClient($this->requestFactory, $this->httpClient, $this->config);
     }
 
     /**
@@ -154,7 +173,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
     public function getScoringGroups(
         ?int $customerId = null
     ): Client\ClientInterface {
-        return new Client\ScoringGroupsClient(
+        return new ScoringGroupsClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -170,7 +189,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
     public function getScoringHistory(
         ?int $customerId = null
     ): Client\ClientInterface {
-        return new Client\ScoringHistoryClient(
+        return new ScoringHistoryClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -186,7 +205,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
     public function getTrackingHistory(
         ?int $customerId = null
     ): Client\ClientInterface {
-        return new Client\TrackingHistoryClient(
+        return new TrackingHistoryClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -199,7 +218,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getTrackingTypes(): Client\ClientInterface
     {
-        return new Client\TrackingTypesClient($this->requestFactory, $this->httpClient, $this->config);
+        return new TrackingTypesClient($this->requestFactory, $this->httpClient, $this->config);
     }
 
     /**
@@ -209,7 +228,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getNewsletterSendlogs(int $customerId): Client\ClientInterface
     {
-        return new Client\NewsletterSendlogsClient(
+        return new NewsletterSendlogsClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -224,7 +243,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getMilestoneProfiles(int $customerId): Client\ClientInterface
     {
-        return new Client\MilestoneProfileClient(
+        return new MilestoneProfileClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -239,7 +258,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getCampaignProfileHistory(int $campaignId): Client\ClientInterface
     {
-        return new Client\CampaignProfileHistoryClient(
+        return new CampaignProfileHistoryClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -254,7 +273,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getScoringCluster(): Client\ClientInterface
     {
-        return new Client\ScoringClusterClient(
+        return new ScoringClusterClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -268,7 +287,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getGeoCoordinates(?int $customerId = null): Client\ClientInterface
     {
-        return new Client\GeoCoordinatesClient(
+        return new GeoCoordinatesClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -283,7 +302,7 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public function getArticleReferences(?int $customerId = null): Client\ClientInterface
     {
-        return new Client\ArticleReferencesClient(
+        return new ArticleReferencesClient(
             $this->requestFactory,
             $this->httpClient,
             $this->config,
@@ -300,8 +319,8 @@ final class EvalancheConnection implements EvalancheConnectionInterface
      */
     public static function create(
         EvalancheConfigInterface $evalancheConfig,
-        ClientInterface $httpClient = null,
-        RequestFactoryInterface $requestFactory = null,
+        null|ClientInterface $httpClient = null,
+        null|RequestFactoryInterface $requestFactory = null,
     ): EvalancheConnectionInterface {
         return new self(
             $requestFactory ?? Psr17FactoryDiscovery::findRequestFactory(),

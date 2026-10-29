@@ -6,17 +6,17 @@ namespace Scn\EvalancheReportingApiConnector\Enum;
 
 final class TimeFormat
 {
-    public const ISO8601 = 'iso8601';
-    public const UNIX = 'unix';
-    public const RFC822 = 'rfc822';
-    public const RFC850 = 'rfc850';
-    public const RFC1036 = 'rfc1036';
-    public const RFC1123 = 'rfc1123';
-    public const RFC2822 = 'rfc2822';
-    public const RFC3339 = 'rfc3339';
-    public const W3C = 'w3c';
+    public const string ISO8601 = 'iso8601';
+    public const string UNIX = 'unix';
+    public const string RFC822 = 'rfc822';
+    public const string RFC850 = 'rfc850';
+    public const string RFC1036 = 'rfc1036';
+    public const string RFC1123 = 'rfc1123';
+    public const string RFC2822 = 'rfc2822';
+    public const string RFC3339 = 'rfc3339';
+    public const string W3C = 'w3c';
 
-    public const ALLOWED_FORMATS = [
+    public const array ALLOWED_FORMATS = [
         self::ISO8601,
         self::UNIX,
         self::RFC822,

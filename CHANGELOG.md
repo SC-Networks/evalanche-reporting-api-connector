@@ -1,4 +1,11 @@
 # Changelog
+## [2.1.0] - 2026-10-xx
+### Changed
+- Remove support for older PHP versions and require at least `PHP8.3`
+
+### Fixed
+- Use explicit nullable types to avoid compatibility issues with newer php versions
+
 ## [2.0.0] - 2022-05-31
 ### Added
 - Add clients for `scoringcluster`, `geocoordinates` and `articlereferences`
